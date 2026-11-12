@@ -8,12 +8,15 @@ Production Sites version **30**, source commit `ba1bd5c93349dba31d70d3b0978bbfbd
 
 ## Build and test
 
-Requires Node.js, Python 3 (`python` command), and Bash. No application dependency install is needed for the bundled Worker. The geometry test additionally requires Python package `shapely`.
+Requires Node.js, Python 3 (`python` command), and Bash. No application dependency install is needed for the bundled Worker. The geometry test additionally requires Shapely and pyproj; tested versions are pinned in `requirements-test.txt`.
 
 ```sh
-npm test
+python -m venv .venv
+. .venv/bin/activate
+python -m pip install --index-url https://pypi.org/simple -r requirements-test.txt
 cp .openai/hosting.json.example .openai/hosting.json
 # Set your own authorized Sites project ID before deploying.
+npm test
 npm run build
 npm run validate
 npm run dev
@@ -35,4 +38,4 @@ Future reviewed changes should be committed with their test evidence. Do not pub
 
 ## Import verification
 
-Build and Worker artifact validation passed. `npm test` ran until the road-fee geometry test, then stopped because this export environment lacks `shapely`; the complete suite is not claimed as passed. Runtime data freshness, D1 migration and browser acceptance were not revalidated by this source export.
+Build and Worker artifact validation passed. All JavaScript tests passed in `npm test`. After installing missing Shapely and pyproj in an isolated virtual environment from official PyPI, the remaining geometry and source-link tests, build and artifact validation passed. This was a resumed sequence rather than one uninterrupted aggregate run. See `docs/IMPORT-VALIDATION.md`. Runtime data freshness, D1 migration and browser acceptance were not revalidated by this source export.
