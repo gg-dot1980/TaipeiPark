@@ -1,0 +1,14 @@
+import fs from 'node:fs';import vm from 'node:vm';import assert from 'node:assert/strict';
+const page=fs.readFileSync('taipei_parking_mobile/index.html','utf8'),norm=s=>s.toLowerCase().replace(/[^a-z0-9]/g,'');
+const fields=row=>Object.fromEntries(Object.entries(row).map(([k,v])=>[norm(k),v]));
+const context={xml:(tag,row)=>row[norm(tag)]??'',Intl,Date};vm.createContext(context);
+vm.runInContext(page.slice(page.indexOf('function tzTime('),page.indexOf('async function cityLots()')),context);
+const {coords,twd97ToWgs84,tzTime}=context,fixtures=JSON.parse(fs.readFileSync('data/lot-coordinates-fixture.json')),audit=JSON.parse(fs.readFileSync('data/lot-coordinate-audit.json'));
+const distance=(a,b)=>Math.hypot((a.lat-b.lat)*111320,(a.lon-b.lon)*111320*Math.cos(a.lat*Math.PI/180));let maxError=0,restored=0,carRestored=0;
+for(const {fields:f,projectedReference,expected,legacy} of fixtures){const actual=coords(f);assert.ok(actual&&expected,f.id);assert.ok(distance(actual,expected)<0.1,`${f.id}: wrong coordinates`);if(legacy){assert.equal(actual.lat,legacy.lat);assert.equal(actual.lon,legacy.lon);assert.notEqual(actual.coordinateMethod,'twd97')}else{restored++;carRestored+=Number(f.totalcar)>0;assert.equal(actual.coordinateMethod,'twd97');assert.match(actual.coordinateSource,/未提供可用入口/)}if(projectedReference){const t=twd97ToWgs84(Number(f.tw97x),Number(f.tw97y));maxError=Math.max(maxError,distance(t,projectedReference));assert.ok(distance(t,projectedReference)<0.1)}}
+assert.equal(fixtures.length,1777);assert.equal(restored,audit.counts.projectedFallback);assert.equal(carRestored,537);assert.equal(audit.counts.passengerCarLocatedAfter,1719);
+for(const f of [{},{TW97X:'0',TW97Y:'0'},{TW97X:'121.5',TW97Y:'25.0'},{TW97X:'2770000',TW97Y:'302000'},{TW97X:'Infinity',TW97Y:'2770000'},{TW97X:'302000',TW97Y:'invalid'},{Xcod:'302000',Ycod:'2770000'}])assert.equal(coords(fields(f)),null);
+for(const f of [{Xcod:'25.072',Ycod:'121.525'},{Xcod:'121.525',Ycod:'25.072'},{latitude:'25.072',longitude:'121.525',TW97X:'302000',TW97Y:'2770000'}]){const p=coords(fields(f));assert.equal(p.lat,25.072);assert.equal(p.lon,121.525)}
+assert.equal(tzTime('Tue Oct 27 14:15:00 CST 2026').toISOString(),'2026-10-27T06:15:00.000Z');assert.equal(tzTime('2026/11/09 13:35:00').toISOString(),'2026-11-09T05:35:00.000Z');assert.equal(tzTime('nonsense'),null);
+const result=JSON.parse(JSON.stringify(context.lotSpecialDetails(fields({Handicap_First:'2',Pregnancy_First:'0',ChargingStation:'1',Handicap_Discount:'依現場公告'}))));assert.match(result,/身障格位：2/);assert.match(result,/不是可用數量/);assert.ok(!result.includes('孕婦'));
+console.log(`Passed actual page coordinate parser: ${fixtures.length} lots, ${carRestored} car lots restored, all projected coordinates within ${maxError.toFixed(5)} m of independent PROJ reference; invalid/swapped/priority guards and timestamps passed.`);

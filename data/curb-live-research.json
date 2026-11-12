@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-11-09T05:44:13.395482+00:00",
+  "integrationStatus": "awaiting_authorized_api_access",
+  "source": "https://data.gov.tw/dataset/174357",
+  "specification": "https://tdx.transportdata.tw/api-service/swagger/basic/945f57da-f29d-4dfd-94ec-c35d9f62be7d",
+  "documentedCity": "Taipei",
+  "documentedUpdateFrequency": "每1分鐘",
+  "actualCoverageVerified": false,
+  "availabilityActive": false,
+  "notes": [
+    "TDX正式基本資料、逐格動態、收費時段接口已確認含Taipei；需正式API Key。",
+    "尚未取得有授權的全量回應，實際格數、SHP對應與逐格新鮮度未驗證。",
+    "不以北市好停車頁內接口取代正式介接；不把最後變動時間當即時心跳。",
+    "上線前須核實唯一格位對應、設備正常、逐格時間、占用碼、車種/禁停限制及API配額。"
+  ]
+}

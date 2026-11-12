@@ -1,0 +1,8 @@
+import fs from 'node:fs';import assert from 'node:assert/strict';import worker from '../worker/index.js';
+const links=JSON.parse(fs.readFileSync('data/road-source-links.json')),audit=JSON.parse(fs.readFileSync('data/source-audit.json')),fees=JSON.parse(fs.readFileSync('data/road-fees/index.json'));
+let r=await worker.fetch(new Request('https://test/api/data-coverage'));assert.equal(r.status,200);assert.deepEqual(await r.json(),audit);
+r=await worker.fetch(new Request('https://test/data-coverage'));const h=await r.text();assert.match(h,/資料完整度與來源/);assert.match(h,/不回退舊價/);assert.match(h,/2,431/);
+r=await worker.fetch(new Request('https://test/api/data-coverage',{method:'POST'}));assert.equal(r.status,405);
+let referenced=0;for(const p of [[25.0477214,121.5171151],[25.021666,121.535191],[25.0640213,121.5362904]]){const result=await (await worker.fetch(new Request('https://test/api/road-nearby?lat='+p[0]+'&lng='+p[1]))).json();for(const x of result.items){assert.equal(x.availability,null);assert.equal(x.fresh,false);assert.deepEqual(x.availByType,{});if(x.feeReference){referenced++;assert.ok(links.links[x.id]);assert.match(x.details,/缺完整日別/);}if(x.id==='567326'){assert.equal(x.feeRules[0].rate,'40');assert.equal(x.feeRules[0].sourcePage,15)}}}
+assert.ok(referenced>0);const conflicts=fees.rows.map((r,i)=>[r,i]).filter(([r])=>r.road==='裕民六路114巷'&&r.scope==='裕民六路-懷德街').map(([,i])=>i);for(const b of Object.values(fees.bindings))assert.ok(!b.rows.some(i=>conflicts.includes(i)));
+console.log('Passed coverage routes, current PDF rate correction, ambiguous scope exclusions, and '+referenced+' reference-only nearby rows without vacancy leakage.');

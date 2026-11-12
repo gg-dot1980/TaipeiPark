@@ -1,0 +1,338 @@
+[
+  [
+    {
+      "district": "北投區",
+      "road": "中和街",
+      "scope": "秀山路-大業路",
+      "time": "09-17",
+      "rate": "P",
+      "days": "1-6",
+      "mode": "hour",
+      "sourceFile": "hourly.pdf",
+      "sourcePage": 25,
+      "sourceTableRow": 6,
+      "rawCells": [
+        "北投區",
+        "中和街",
+        "秀山路-大業路",
+        "09-17",
+        "P",
+        "週1-6"
+      ],
+      "start": "秀山路",
+      "end": "大業路",
+      "feeType": "symbol"
+    },
+    {
+      "district": "北投區",
+      "road": "中和街",
+      "scope": "秀山路-大業路",
+      "time": "9-17",
+      "rate": "M",
+      "days": "1-6",
+      "mode": "entry",
+      "sourceFile": "entry.pdf",
+      "sourcePage": 6,
+      "sourceTableRow": 21,
+      "rawCells": [
+        "北投區",
+        "中和街",
+        "秀山路-大業路",
+        "9-17",
+        "M",
+        "1-6"
+      ],
+      "start": "秀山路",
+      "end": "大業路",
+      "feeType": "symbol"
+    }
+  ],
+  [
+    {
+      "district": "北投區",
+      "road": "中和街錫安巷",
+      "scope": "中和街-中和街錫安巷112號前",
+      "time": "09-17",
+      "rate": "P",
+      "days": "1-6",
+      "mode": "hour",
+      "sourceFile": "hourly.pdf",
+      "sourcePage": 25,
+      "sourceTableRow": 10,
+      "rawCells": [
+        "北投區",
+        "中和街錫安巷",
+        "中和街-中和街錫安巷112號前",
+        "09-17",
+        "P",
+        "週1-6"
+      ],
+      "start": "中和街",
+      "end": "中和街錫安巷112號前",
+      "feeType": "symbol"
+    },
+    {
+      "district": "北投區",
+      "road": "中和街錫安巷",
+      "scope": "中和街-中和街錫安巷112號前",
+      "time": "9-17",
+      "rate": "M",
+      "days": "1-6",
+      "mode": "entry",
+      "sourceFile": "entry.pdf",
+      "sourcePage": 6,
+      "sourceTableRow": 27,
+      "rawCells": [
+        "北投區",
+        "中和街錫安巷",
+        "中和街-中和街錫安巷112號前",
+        "9-17",
+        "M",
+        "1-6"
+      ],
+      "start": "中和街",
+      "end": "中和街錫安巷112號前",
+      "feeType": "symbol"
+    }
+  ],
+  [
+    {
+      "district": "北投區",
+      "road": "尊賢街239巷",
+      "scope": "承德路7段280巷6弄-尊賢街",
+      "time": "09-17",
+      "rate": "20",
+      "days": "1-5",
+      "mode": "hour",
+      "sourceFile": "hourly.pdf",
+      "sourcePage": 25,
+      "sourceTableRow": 33,
+      "rawCells": [
+        "北投區",
+        "尊賢街239巷",
+        "承德路7段280巷6弄-尊賢街",
+        "09-17",
+        "20元",
+        "週1-5"
+      ],
+      "start": "承德路7段280巷6弄",
+      "end": "尊賢街",
+      "feeType": "hour"
+    },
+    {
+      "district": "北投區",
+      "road": "尊賢街239巷",
+      "scope": "承德路7段280巷6弄-尊賢街",
+      "time": "9-17",
+      "rate": "M",
+      "days": "1-5",
+      "mode": "entry",
+      "sourceFile": "entry.pdf",
+      "sourcePage": 7,
+      "sourceTableRow": 29,
+      "rawCells": [
+        "北投區",
+        "尊賢街239巷",
+        "承德路7段280巷6弄-尊賢街",
+        "9-17",
+        "M",
+        "1-5"
+      ],
+      "start": "承德路7段280巷6弄",
+      "end": "尊賢街",
+      "feeType": "symbol"
+    }
+  ],
+  [
+    {
+      "district": "北投區",
+      "road": "裕民六路114巷",
+      "scope": "裕民六路-懷德街",
+      "time": "09-17",
+      "rate": "30",
+      "days": "1-6",
+      "mode": "hour",
+      "sourceFile": "hourly.pdf",
+      "sourcePage": 25,
+      "sourceTableRow": 43,
+      "rawCells": [
+        "北投區",
+        "裕民六路114巷",
+        "裕民六路-懷德街",
+        "09-17",
+        "30元",
+        "週1-6"
+      ],
+      "start": "裕民六路",
+      "end": "懷德街",
+      "feeType": "hour"
+    },
+    {
+      "district": "北投區",
+      "road": "裕民六路114巷",
+      "scope": "裕民六路-懷德街",
+      "time": "9-17",
+      "rate": "50",
+      "days": "1-6",
+      "mode": "entry",
+      "sourceFile": "entry.pdf",
+      "sourcePage": 7,
+      "sourceTableRow": 41,
+      "rawCells": [
+        "北投區",
+        "裕民六路114巷",
+        "裕民六路-懷德街",
+        "9-17",
+        "50",
+        "1-6"
+      ],
+      "start": "裕民六路",
+      "end": "懷德街",
+      "feeType": "entry"
+    }
+  ],
+  [
+    {
+      "district": "信義區",
+      "road": "福德街251巷7弄",
+      "scope": "福德街251巷-福德街309巷",
+      "time": "09-17",
+      "rate": "20",
+      "days": "1-5",
+      "mode": "hour",
+      "sourceFile": "hourly.pdf",
+      "sourcePage": 32,
+      "sourceTableRow": 46,
+      "rawCells": [
+        "信義區",
+        "福德街251巷7弄",
+        "福德街251巷-福德街309巷",
+        "09-17",
+        "20元",
+        "週1-5"
+      ],
+      "start": "福德街251巷",
+      "end": "福德街309巷",
+      "feeType": "hour"
+    },
+    {
+      "district": "信義區",
+      "road": "福德街251巷7弄",
+      "scope": "福德街251巷-福德街309巷",
+      "time": "09-17",
+      "rate": "20",
+      "days": "1-5",
+      "mode": "hour",
+      "sourceFile": "hourly.pdf",
+      "sourcePage": 32,
+      "sourceTableRow": 47,
+      "rawCells": [
+        "信義區",
+        "福德街251巷7弄",
+        "福德街251巷-福德街309巷",
+        "09-17",
+        "20元",
+        "週1-5"
+      ],
+      "start": "福德街251巷",
+      "end": "福德街309巷",
+      "feeType": "hour"
+    }
+  ],
+  [
+    {
+      "district": "南港區",
+      "road": "大坑街",
+      "scope": "研究院路1段130巷-舊莊街1段199巷11弄",
+      "time": "09-17",
+      "rate": "20",
+      "days": "1-6",
+      "mode": "hour",
+      "sourceFile": "hourly.pdf",
+      "sourcePage": 32,
+      "sourceTableRow": 52,
+      "rawCells": [
+        "南港區",
+        "大坑街",
+        "研究院路1段130巷-舊莊街1段199\n巷11弄",
+        "09-17",
+        "20元",
+        "週1-6"
+      ],
+      "start": "研究院路1段130巷",
+      "end": "舊莊街1段199巷11弄",
+      "feeType": "hour"
+    },
+    {
+      "district": "南港區",
+      "road": "大坑街",
+      "scope": "研究院路1段130巷-舊莊街1段199巷11弄",
+      "time": "09-17",
+      "rate": "20",
+      "days": "1-6",
+      "mode": "hour",
+      "sourceFile": "hourly.pdf",
+      "sourcePage": 32,
+      "sourceTableRow": 53,
+      "rawCells": [
+        "南港區",
+        "大坑街",
+        "研究院路1段130巷-舊莊街1段199\n巷11弄",
+        "09-17",
+        "20元",
+        "週1-6"
+      ],
+      "start": "研究院路1段130巷",
+      "end": "舊莊街1段199巷11弄",
+      "feeType": "hour"
+    }
+  ],
+  [
+    {
+      "district": "南港區",
+      "road": "重陽路261號旁無名巷",
+      "scope": "松河街-重陽路",
+      "time": "09-17",
+      "rate": "M",
+      "days": "1-6",
+      "mode": "hour",
+      "sourceFile": "hourly.pdf",
+      "sourcePage": 34,
+      "sourceTableRow": 17,
+      "rawCells": [
+        "南港區",
+        "重陽路261號旁無名巷",
+        "松河街-重陽路",
+        "09-17",
+        "M",
+        "週1-6"
+      ],
+      "start": "松河街",
+      "end": "重陽路",
+      "feeType": "symbol"
+    },
+    {
+      "district": "南港區",
+      "road": "重陽路261號旁無名巷",
+      "scope": "松河街-重陽路",
+      "time": "9-17",
+      "rate": "P",
+      "days": "1-6",
+      "mode": "entry",
+      "sourceFile": "entry.pdf",
+      "sourcePage": 4,
+      "sourceTableRow": 49,
+      "rawCells": [
+        "南港區",
+        "重陽路261號旁無名巷",
+        "松河街-重陽路",
+        "9-17",
+        "P",
+        "1-6"
+      ],
+      "start": "松河街",
+      "end": "重陽路",
+      "feeType": "symbol"
+    }
+  ]
+]
