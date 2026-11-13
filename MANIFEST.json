@@ -1,0 +1,47 @@
+[
+  {
+    "path": ".gitignore",
+    "bytes": 6,
+    "sha256": "ed19d3c9c8a5e34d0179e0b1a9c2907d2e657738733e4a432a8cf81c76ce56f1"
+  },
+  {
+    "path": "CHANGELOG.md",
+    "bytes": 237,
+    "sha256": "229a9e44989f1ae1870594db18fe436bfe6d62e422639848cb888098504e2516"
+  },
+  {
+    "path": "README.md",
+    "bytes": 698,
+    "sha256": "4d31ba4583db5f7c6ece444e8e9f78b5b31619c307e72921bcfc516f0d94de3a"
+  },
+  {
+    "path": "drizzle/0000_address_storage.sql",
+    "bytes": 1471,
+    "sha256": "7032c6e2e431cfe0ce003e253a744d156f63f40eb4094d0fd988c8cab18d99f7"
+  },
+  {
+    "path": "drizzle/meta/_journal.json",
+    "bytes": 205,
+    "sha256": "17dc9f56bff56817d8b077c8c83536ef1d5dd5abc0758742c55f516dcce25d6c"
+  },
+  {
+    "path": "package.json",
+    "bytes": 118,
+    "sha256": "31a3e84f46d91f2fccbe1d8ee1c727146e25b540ca5b38753d2a10b575d82666"
+  },
+  {
+    "path": "provenance.json",
+    "bytes": 343,
+    "sha256": "e96f9d6336c51bb935e3350e9e528ce033211e5d1984c46834dc1978ea5e4e29"
+  },
+  {
+    "path": "scripts/build.sh",
+    "bytes": 162,
+    "sha256": "a5073daa2715d2dd69d0f957878c68be591069ff29e5d8f90fcd22df5899e5d6"
+  },
+  {
+    "path": "worker/index.js",
+    "bytes": 8571122,
+    "sha256": "0bec1f67684882358a335e040dff166bd8e6b08911a7193f4bb0df532585609b"
+  }
+]

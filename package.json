@@ -1,11 +1,1 @@
-{
-  "name": "sites-worker-esm-starter",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "build": "bash scripts/build.sh",
-    "validate": "node scripts/validate-artifact.mjs",
-    "dev": "node scripts/dev-server.mjs",
-    "test": "bash scripts/test-all.sh"
-  }
-}
+{"name": "taipeipark-isolated-test", "private": true, "type": "module", "scripts": {"build": "bash scripts/build.sh"}}
