@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';import fs from 'node:fs';
-import worker from '../../wenlin-isolated-site/.sites-checkout/dist/server/index.js';
+import worker from '../../dist/server/index.js';
 let calls=0;const env={DB:{prepare(){calls++;throw Error('No writes permitted')}}};let tests=[];
 for(const method of ['POST','PUT','DELETE','PATCH']){const r=await worker.fetch(new Request('https://test.local/internal/address-import',{method,body:'{}'}),env);assert.equal(r.status,405);assert.equal(r.headers.get('Allow'),'GET');tests.push(method+' blocked')}
 assert.equal(calls,0);tests.push('zero DB access for writes');

@@ -1,0 +1,37 @@
+{
+  "project_id": "appgprj_6af2eba0dd3881919264985534963eb8",
+  "binding_name": "DB",
+  "table_name": "address_snapshot",
+  "columns": [
+    "snapshot_id",
+    "source_sha256",
+    "index_sha256",
+    "meta_json",
+    "expected_doors",
+    "expected_conflicts",
+    "expected_references",
+    "state"
+  ],
+  "rows": [
+    {
+      "snapshot_id": "door-42015a39689740c2bf8a1ef1-ref-251f7a27f3",
+      "source_sha256": "51b3d530445f5f6cc742ae4b0f2598891f48e760958278e500cf5a1d52c752e3",
+      "index_sha256": "42015a39689740c2bf8a1ef1e6c695ae4765ef25564d174bddd8600c1bbcaa4d",
+      "meta_json": "{\"official\":{\"source\":\"https://data.taipei/dataset/detail?id=b7c8e724-1e98-45ee-a0bd-f3840623ed97\",\"download\":\"https://data.taipei/api/frontstage/tpeod/dataset/resource.download?rid=ce76ca0c-7f94-4935-ab47-1d2a41ca2abb\",\"sourceUpdated\":\"2026-11-02 10:32:43 Asia/Taipei\",\"sha256\":\"51b3d530445f5f6cc742ae4b0f2598891f48e760958278e500cf5a1d52c752e3\",\"inputRows\":1158179,\"indexedDoors\":251431,\"excluded\":{\"complex-number\":6673},\"conflictingDoors\":[\"中山區松江路126號\",\"信義區信義路5段7號\",\"北投區富貴一路2-1號\",\"士林區大南路335號\",\"大安區敦化南路2段172巷26號\",\"文山區三福街75號\",\"文山區景華街128巷2弄7-5號\",\"文山區景華街196號\",\"文山區景華街198號\",\"文山區木柵路3段168號\",\"文山區興隆路2段61巷25號\",\"文山區辛亥路4段128-11號\",\"文山區辛亥路4段128-3號\",\"文山區辛亥路4段128-6號\",\"文山區辛亥路4段128-7號\"],\"precision\":\"official address point, not parking entrance\",\"selectionRule\":\"Exact basic-door records take precedence over floor/unit-derived records. Floor-only records merge only when coordinates agree within10m; differing exact basic-door records remain excluded.\",\"crs\":\"EPSG:3826 to EPSG:4326; interpretation checked separately against official WGS84 references\",\"license\":\"https://data.gov.tw/license\"},\"references\":{\"checkedAt\":\"2026-11-10T03:28:04.738613+00:00\",\"precision\":\"Address-associated parking-site representative point, not verified entrance or surveyed door\",\"policy\":\"Exact full address only; two separately identified sources corroborate entity/address and coordinates; no relative-address or neighboring-number substitution\"}}",
+      "expected_doors": 251431,
+      "expected_conflicts": 15,
+      "expected_references": 2,
+      "state": "verified"
+    }
+  ],
+  "limit": 25,
+  "offset": 0,
+  "has_more": false,
+  "model_projection": {
+    "truncated": false,
+    "truncated_values": 0,
+    "omitted_columns": 0,
+    "omitted_rows": 0,
+    "next_offset": null
+  }
+}

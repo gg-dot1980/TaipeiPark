@@ -1,0 +1,19 @@
+{
+  "checkedAt": "2026-11-13T21:18:39.830012+00:00",
+  "scope": "Offline 100-case replay, not live/browser or independent new truth",
+  "cases": 100,
+  "classifications": {
+    "address-concordant": 84,
+    "unresolved": 5,
+    "confirmation-required": 8,
+    "spatial-review": 2,
+    "approximate": 1
+  },
+  "changedOutcomesFromPriorMetadataCandidate": [],
+  "independentlyAcceptedLocations": 69,
+  "requiredAcceptance": 85,
+  "newIndependentPasses": 0,
+  "fullResultSha256": "dd503f28580180ad1c3a2e9a82e69e0771d39b19ad309d6e9a2df6cea1f52dcf",
+  "metadataTests": 12,
+  "publicWriteLockTests": 7
+}

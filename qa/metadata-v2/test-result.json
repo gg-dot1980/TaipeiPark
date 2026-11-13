@@ -1,7 +1,7 @@
 {
-  "checkedAt": "2026-11-12T11:41:57.395Z",
+  "checkedAt": "2026-11-13T21:17:05.073Z",
   "scope": "Local actual SQLite + Worker handler; not cloud/browser",
-  "passed": 11,
+  "passed": 12,
   "checks": [
     "Unauthenticated writes rejected",
     "Missing configured credential fails closed",
@@ -13,6 +13,7 @@
     "Re-verification read-only idempotent",
     "Missing actual row rejected",
     "Reference query returns labeled source",
-    "Old snapshot preserved with original metadata"
+    "Old snapshot preserved with original metadata",
+    "Reference evidence dates include later Wenlin row"
   ]
 }

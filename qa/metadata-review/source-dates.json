@@ -1,0 +1,24 @@
+{
+  "checkedAt": "2026-11-13T21:15:59.738492+00:00",
+  "parkingGeometry": {
+    "dataset": "https://data.taipei/dataset/detail?id=5a911ea5-1694-4301-808e-e1780d971611",
+    "frequency": "monthly",
+    "shpResourceUpdated": "2026-10-06 10:25:50",
+    "csvResourceUpdated": "2026-10-15 11:17:10",
+    "catalogMetadataUpdated": "2026-10-15 11:17:37",
+    "archiveFilename": "park01_202610021742UTF8.zip",
+    "dateTimezone": "not explicitly displayed on retrieved page; do not silently convert",
+    "pageSha256": "4d68d762b63f11e240858187a7bc8c42ddc2a76257361ac24f6b9cc9b9f231df",
+    "distinction": "Catalog modification is not actual geometry layer update; filename timestamp is not certified observation/effective time."
+  },
+  "addressSource": {
+    "dataset": "https://data.taipei/dataset/detail?id=b7c8e724-1e98-45ee-a0bd-f3840623ed97",
+    "recordedSourceUpdated": "2026-11-02 10:32:43 Asia/Taipei",
+    "scope": "Stored source metadata, not independently refetched address resource this run"
+  },
+  "importTime": {
+    "exactStartedAt": null,
+    "exactCompletedAt": null,
+    "reason": "Snapshot schema and original importer report do not persist import timestamps; file mtime/deployment time must not be substituted."
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "project_id": "appgprj_6af2eba0dd3881919264985534963eb8",
+  "binding_name": "DB",
+  "table_name": "address_reference",
+  "columns": [
+    "snapshot_id",
+    "address_key",
+    "lat_e7",
+    "lon_e7",
+    "evidence_json"
+  ],
+  "rows": [
+    {
+      "snapshot_id": "door-42015a39689740c2bf8a1ef1-ref-251f7a27f3",
+      "address_key": "中山區雙城街18巷5號",
+      "lat_e7": 250655240,
+      "lon_e7": 1215237871,
+      "evidence_json": "{\"address\":\"臺北市中山區雙城街18巷5號\",\"name\":\"雙城停車場\",\"lat\":25.065524,\"lon\":121.5237871,\"addressSource\":\"https://atis.taipei.gov.tw/aspx/park/parkF.aspx?lang=zh-Hant-TW&region=%E4%B8%AD%E5%B1%B1%E5%8D%80&sn=TPE0259\",\"coordinateSource\":\"https://www.openstreetmap.org/way/291504144\",\"evidence\":\"官方ATIS及停管處XML均確認雙城街18巷5號空地；獨立OSM parking實體雙城街停車場在相同區/巷，座標與公告點約18公尺，非其他行政區同名結果。OSM未提供門牌號碼，門牌來自官方資料，非假稱OSM有門牌。\",\"provider\":\"OpenStreetMap contributors ODbL1.0\"}"
+    },
+    {
+      "snapshot_id": "door-42015a39689740c2bf8a1ef1-ref-251f7a27f3",
+      "address_key": "北投區文林北路209號",
+      "lat_e7": 251079966,
+      "lon_e7": 1215136593,
+      "evidence_json": "{\"caseId\":\"NEXT-089\",\"name\":\"Times 文林北路\",\"address\":\"臺北市北投區文林北路209號\",\"lat\":25.1079966,\"lon\":121.5136593,\"addressSource\":\"https://atis.taipei.gov.tw/aspx/park/parkF.aspx?lang=zh-Hant-TW&sn=TPE1510\",\"coordinateSource\":\"https://www.park24.com.tw/service_locations/park-detail-BUK0061029/?business=2&traffic=1\",\"navigationLink\":\"https://www.google.com/maps/dir/?api=1&destination=25.1079966, 121.5136593\",\"sourceSha256\":\"135be92540acba4ad5882fa521a2c29f6bdb800b5a2219877cf63edbd035ea70\",\"checkedAt\":\"2026-11-10T09:39:09.533615+00:00\",\"precision\":\"Address-associated parking-site representative point, not verified entrance or surveyed door\",\"provider\":\"Times operator published navigation point\",\"evidence\":\"業者獨立場站頁確認完整地址，地址連結明示導航destination座標；凍結官方XML地址相同。非道路中心、非視窗中心、非猜測鄰號。\",\"frozenExpected\":[25.1082,121.5138]}"
+    },
+    {
+      "snapshot_id": "door-42015a39689740c2bf8a1ef1-ref-251f7a27f3",
+      "address_key": "萬華區艋舺大道462號",
+      "lat_e7": 250279660,
+      "lon_e7": 1214905240,
+      "evidence_json": "{\"address\":\"臺北市萬華區艋舺大道462號\",\"name\":\"萬板地下停車場\",\"lat\":25.027966,\"lon\":121.490524,\"addressSource\":\"https://www.gov.taipei/News_Content.aspx?n=D0042A87C2F0270A&s=D7387E34E1345ACB\",\"coordinateSource\":\"https://www.plugshare.com/location/285347\",\"evidence\":\"2026/06/01起官方委外公告確認完整地址；獨立PlugShare場站頁同名、同完整地址，明示25.027966,121.490524；與停管處公告點約11公尺。\",\"provider\":\"PlugShare public station location; crowd-sourced corroboration, not field survey\"}"
+    }
+  ],
+  "limit": 25,
+  "offset": 0,
+  "has_more": false,
+  "model_projection": {
+    "truncated": false,
+    "truncated_values": 0,
+    "omitted_columns": 0,
+    "omitted_rows": 0,
+    "next_offset": null
+  }
+}

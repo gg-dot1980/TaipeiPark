@@ -1,0 +1,31 @@
+{
+  "checkedAt": "2026-11-13T21:16:33.366016+00:00",
+  "scope": "local only; public write lock unchanged",
+  "oldSnapshot": "door-42015a39689740c2bf8a1ef1-ref-251f7a27f3",
+  "newSnapshot": "door-42015a39689740c2bf8a1ef1-ref-251f7a27f3-meta2",
+  "counts": {
+    "doors": 251431,
+    "conflicts": 15,
+    "references": 3
+  },
+  "oldSnapshotUntouched": true,
+  "rowsUnchanged": true,
+  "referenceDates": [
+    {
+      "addressKey": "中山區雙城街18巷5號",
+      "evidenceCheckedAt": "2026-11-10T03:28:04.738613+00:00",
+      "timestampBasis": "original collection"
+    },
+    {
+      "addressKey": "北投區文林北路209號",
+      "evidenceCheckedAt": "2026-11-10T09:39:09.533615+00:00",
+      "timestampBasis": "row"
+    },
+    {
+      "addressKey": "萬華區艋舺大道462號",
+      "evidenceCheckedAt": "2026-11-10T03:28:04.738613+00:00",
+      "timestampBasis": "original collection"
+    }
+  ],
+  "historicalImportTimeKnown": false
+}

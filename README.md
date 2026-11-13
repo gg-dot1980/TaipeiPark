@@ -7,3 +7,6 @@ Every future change to this test site must be committed to this branch with data
 
 ## Current status
 D1 candidate v2 includes non-GET import endpoint lock. Live metadata expected_references=2 vs actual3 remains unresolved. Fixed100 remains69/100, below85/100; production unchanged. Local metadata-v2 candidate and public data export are included separately, not claimed deployed.
+
+## Metadata repair reproducibility
+See [repair checkpoint](qa/metadata-review/REPORT.md) for the proven 2-versus-3 cause, separate source/evidence/import dates, and portable local preparation/test commands. Cloud metadata remains unfixed; no deployment is implied.

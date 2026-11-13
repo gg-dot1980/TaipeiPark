@@ -1,3 +1,5 @@
 node_modules/
 .sites/
 *.sqlite
+qa/metadata-v2/corrected-worker.js
+*.orig

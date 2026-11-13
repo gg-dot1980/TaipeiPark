@@ -1,5 +1,5 @@
 import fs from 'node:fs';import vm from 'node:vm';import crypto from 'node:crypto';
-const base='/workspace/scratch/85889dd4920d/taipeipark-work/qa-next100',checkout='/workspace/scratch/85889dd4920d/taipeipark-work/taipeipark-test-site';const recorded=JSON.parse(fs.readFileSync(base+'/d1-live-results.json')).results;let replay=[];
+const base=new URL('..',import.meta.url).pathname.replace(/\/$/,'');const recorded=JSON.parse(fs.readFileSync(base+'/d1-live-results.json')).results;let replay=[];
 
 const {spawnSync}=await import('node:child_process');const rawWorker=(await import('data:text/javascript;base64,'+fs.readFileSync(base+'/metadata-v2/corrected-worker.js').toString('base64'))).default;const DB={prepare(sql){return {bind(...params){const read=()=>{const r=spawnSync('python3',[base+'/metadata-v2/sqlite.py'],{input:JSON.stringify({sql,params}),encoding:'utf8'});if(r.status!==0)throw Error(r.stderr);return JSON.parse(r.stdout)};return {first:async()=>read()[0]||null,all:async()=>({results:read()})}}}}};
 const input=JSON.parse(fs.readFileSync(base+'/cases.json'));const page=JSON.parse(fs.readFileSync(base+'/metadata-v2/corrected-worker.js','utf8').split('\n')[0].slice(13,-1)),script=page.slice(page.indexOf("(()=>{'use strict';"),page.lastIndexOf('</script>'));
