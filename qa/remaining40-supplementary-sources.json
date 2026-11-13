@@ -1,0 +1,22 @@
+[
+  {
+    "caseId": "NEXT-015",
+    "url": "https://www.lkjh.tp.edu.tw/",
+    "finding": "校方確認福德街221巷15號；未因此消除159m門牌／停車點差異。"
+  },
+  {
+    "caseId": "NEXT-057",
+    "url": "https://atis.taipei.gov.tw/aspx/park/parkF.aspx?lang=zh-Hant-TW&sn=TPE0880",
+    "finding": "官方停車頁使用羅斯福路4段1號；1043m差異尚無足夠入口證據排除。"
+  },
+  {
+    "caseId": "NEXT-010",
+    "url": "https://atis.taipei.gov.tw/aspx/park/parkF.aspx?lang=zh-Hant-TW&sn=TPE0379",
+    "finding": "官方明列51號至137巷間，單一51號不能代表整個路段停車場。"
+  },
+  {
+    "caseId": "NEXT-044",
+    "url": "https://nhdo.gov.taipei/News_Content.aspx?n=E604685ABB2F0678&s=D392F06F4AB795A2&sms=78D644F2755ACCAA",
+    "finding": "2025-11-03停管處公告確認臨47號後方；不能按普通47號或道路候選認定精確定位。"
+  }
+]

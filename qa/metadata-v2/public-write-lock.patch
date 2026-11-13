@@ -1,0 +1,14 @@
+diff --git a/dist/server/index.js b/dist/server/index.js
+index 5666e6e..132611e 100644
+--- a/dist/server/index.js
++++ b/dist/server/index.js
+@@ -38,7 +38,8 @@ export default {
+     if(url.pathname==='/api/data-coverage')return request.method==='GET'?Response.json(DATA_AUDIT,{headers:{'Cache-Control':'no-store'}}):new Response('Method not allowed',{status:405});
+     if(url.pathname==='/data-coverage')return new Response(COVERAGE_HTML,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache'}});
+     if(url.pathname==='/api/road-nearby') return roadNearby(request);
+-    if(url.pathname==='/internal/address-import') return d1Admin(request,env);
++    // Public test site: imports are disabled; read-only inspection remains available.
++    if(url.pathname==='/internal/address-import') return request.method==='GET' ? d1Admin(request,env) : Response.json({error:'Public import endpoint is read-only; use a reviewed protected migration workflow'},{status:405,headers:{'Allow':'GET','Cache-Control':'no-store'}});
+     if(url.pathname==='/api/address') return d1Address(request,env);
+     if(url.pathname==='/api/geocode') return geocode(request);
+     if(url.pathname==='/api/resolve-maps') return resolveMaps(request);

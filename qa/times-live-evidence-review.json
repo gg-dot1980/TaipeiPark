@@ -1,0 +1,184 @@
+{
+  "checkedAt": "2026-11-10T09:51:13.269164+00:00",
+  "sampleSha256": "da4dd9d78b4cfedf01ac4f663754e39ba68808d1f31d2d7e2c611a2d4156e7b7",
+  "reviews": [
+    {
+      "caseId": "NEXT-003",
+      "query": "臺北市信義區信安街162號",
+      "operatorSource": {
+        "caseId": "NEXT-003",
+        "name": "Times信安街",
+        "url": "https://www.park24.com.tw/service_locations/BUK0033046/",
+        "legacySearchLink": "https://www.park24.com.tw/service_locations-detail/BUK0033046/",
+        "routeProvenance": "Current official route parser accepts BUK/TBK IDs; one current-route request using exact ID from official search result; identity/address checked separately",
+        "sourceSha256": "c4c1ba4207107794195ff16aa87fcc073b4ee9df16c2bab065bd52234c50830a",
+        "checkedAt": "2026-11-10T09:48:51.183852+00:00",
+        "navigation": [
+          {
+            "url": "https://www.google.com/maps/dir/?api=1&destination=25.0237381,121.5555779",
+            "label": "台北市信義區信安街162號旁",
+            "point": [
+              25.0237381,
+              121.5555779
+            ]
+          }
+        ],
+        "title": "信安街停車場｜台北市信義區附近停車場｜Times停車場"
+      },
+      "liveRequest": "https://taipeipark-test-20261110.audihsu.chatgpt.site/api/address?q=%E8%87%BA%E5%8C%97%E5%B8%82%E4%BF%A1%E7%BE%A9%E5%8D%80%E4%BF%A1%E5%AE%89%E8%A1%97162%E8%99%9F",
+      "liveResponse": {
+        "match": {
+          "address": "臺北市信義區信安街162號",
+          "lat": 25.0236756,
+          "lon": 121.5554265
+        },
+        "source": "https://data.taipei/dataset/detail?id=b7c8e724-1e98-45ee-a0bd-f3840623ed97",
+        "updated": "2026-11-02 10:32:43 Asia/Taipei",
+        "sha256": "51b3d530445f5f6cc742ae4b0f2598891f48e760958278e500cf5a1d52c752e3",
+        "precision": "official-address-point"
+      },
+      "actualToOperatorMeters": 16.763142498880562,
+      "actualToFrozenMeters": 17.69069865669858,
+      "operatorToFrozenMeters": 4.786075598764361,
+      "precision": "Exact requested door point, independently corroborated parking-site context within frozen150m; not entrance validation",
+      "priorOutcome": "manual-review",
+      "reviewOutcome": "Pass",
+      "reviewBasis": "Relative-address automatic guard is not removed. These four cases individually have independent operator identity/address/navigation evidence plus exact official query-door match. No coordinates or expected sample changed."
+    },
+    {
+      "caseId": "NEXT-038",
+      "query": "臺北市中正區羅斯福路1段1-2號",
+      "operatorSource": {
+        "caseId": "NEXT-038",
+        "name": "Times中正紀念堂捷運站",
+        "url": "https://www.park24.com.tw/service_locations/BUK0070259/",
+        "legacySearchLink": "https://www.park24.com.tw/service_locations-detail/BUK0070259/",
+        "routeProvenance": "Current official route parser accepts BUK/TBK IDs; one current-route request using exact ID from official search result; identity/address checked separately",
+        "sourceSha256": "47cd9401af75fc47a74bfbcf7bc2490ca01a8dbfe23724ea7b48ef66b6448257",
+        "checkedAt": "2026-11-10T09:48:51.309620+00:00",
+        "navigation": [
+          {
+            "url": "https://www.google.com/maps/dir/?api=1&destination=25.034574,121.517275",
+            "label": "台北市中正區羅斯福路一段1-2號旁",
+            "point": [
+              25.034574,
+              121.517275
+            ]
+          }
+        ],
+        "title": "中正紀念堂捷運站停車場｜台北市中正區附近停車場｜Times停車場"
+      },
+      "liveRequest": "https://taipeipark-test-20261110.audihsu.chatgpt.site/api/address?q=%E8%87%BA%E5%8C%97%E5%B8%82%E4%B8%AD%E6%AD%A3%E5%8D%80%E7%BE%85%E6%96%AF%E7%A6%8F%E8%B7%AF1%E6%AE%B51-2%E8%99%9F",
+      "liveResponse": {
+        "match": {
+          "address": "臺北市中正區羅斯福路1段1-2號",
+          "lat": 25.034248,
+          "lon": 121.5174248
+        },
+        "source": "https://data.taipei/dataset/detail?id=b7c8e724-1e98-45ee-a0bd-f3840623ed97",
+        "updated": "2026-11-02 10:32:43 Asia/Taipei",
+        "sha256": "51b3d530445f5f6cc742ae4b0f2598891f48e760958278e500cf5a1d52c752e3",
+        "precision": "official-address-point"
+      },
+      "actualToOperatorMeters": 39.26578954005242,
+      "actualToFrozenMeters": 29.027289087704506,
+      "operatorToFrozenMeters": 24.115632319545984,
+      "precision": "Exact requested door point, independently corroborated parking-site context within frozen150m; not entrance validation",
+      "priorOutcome": "manual-review",
+      "reviewOutcome": "Pass",
+      "reviewBasis": "Relative-address automatic guard is not removed. These four cases individually have independent operator identity/address/navigation evidence plus exact official query-door match. No coordinates or expected sample changed."
+    },
+    {
+      "caseId": "NEXT-067",
+      "query": "臺北市士林區德行西路5號",
+      "operatorSource": {
+        "caseId": "NEXT-067",
+        "name": "Times 德行西路",
+        "url": "https://www.park24.com.tw/service_locations/BUK0041539/",
+        "legacySearchLink": "https://www.park24.com.tw/service_locations-detail/BUK0041539/",
+        "routeProvenance": "Current official route parser accepts BUK/TBK IDs; one current-route request using exact ID from official search result; identity/address checked separately",
+        "sourceSha256": "0a74d5451aaf6ea8934277e3964253eecff3834fe6367d284f0570bfa222ecf3",
+        "checkedAt": "2026-11-10T09:48:55.737988+00:00",
+        "navigation": [
+          {
+            "url": "https://www.google.com/maps/dir/?api=1&destination=25.1064415,121.524696",
+            "label": "台北市士林區德行西路5號旁",
+            "point": [
+              25.1064415,
+              121.524696
+            ]
+          }
+        ],
+        "title": "德行西路停車場｜台北市士林區附近停車場｜Times停車場"
+      },
+      "liveRequest": "https://taipeipark-test-20261110.audihsu.chatgpt.site/api/address?q=%E8%87%BA%E5%8C%97%E5%B8%82%E5%A3%AB%E6%9E%97%E5%8D%80%E5%BE%B7%E8%A1%8C%E8%A5%BF%E8%B7%AF5%E8%99%9F",
+      "liveResponse": {
+        "match": {
+          "address": "臺北市士林區德行西路5號",
+          "lat": 25.1063984,
+          "lon": 121.5244512
+        },
+        "source": "https://data.taipei/dataset/detail?id=b7c8e724-1e98-45ee-a0bd-f3840623ed97",
+        "updated": "2026-11-02 10:32:43 Asia/Taipei",
+        "sha256": "51b3d530445f5f6cc742ae4b0f2598891f48e760958278e500cf5a1d52c752e3",
+        "precision": "official-address-point"
+      },
+      "actualToOperatorMeters": 25.110343143636666,
+      "actualToFrozenMeters": 18.55252280396317,
+      "operatorToFrozenMeters": 18.466088986150044,
+      "precision": "Exact requested door point, independently corroborated parking-site context within frozen150m; not entrance validation",
+      "priorOutcome": "manual-review",
+      "reviewOutcome": "Pass",
+      "reviewBasis": "Relative-address automatic guard is not removed. These four cases individually have independent operator identity/address/navigation evidence plus exact official query-door match. No coordinates or expected sample changed."
+    },
+    {
+      "caseId": "NEXT-073",
+      "query": "臺北市中山區錦州街30巷2號",
+      "operatorSource": {
+        "caseId": "NEXT-073",
+        "name": "Times錦州街",
+        "url": "https://www.park24.com.tw/service_locations/BUK0069146/",
+        "legacySearchLink": "https://www.park24.com.tw/service_locations-detail/BUK0069146/",
+        "routeProvenance": "Current official route parser accepts BUK/TBK IDs; one current-route request using exact ID from official search result; identity/address checked separately",
+        "sourceSha256": "c6e78b5d3300093848b2d358f51edae1dd7a05d7c90b7ad5a528e4a37f580369",
+        "checkedAt": "2026-11-10T09:48:59.913487+00:00",
+        "navigation": [
+          {
+            "url": "https://www.google.com/maps/dir/?api=1&destination=25.059932,121.524652",
+            "label": "台北市中山區錦州街30巷2號旁",
+            "point": [
+              25.059932,
+              121.524652
+            ]
+          }
+        ],
+        "title": "錦州街停車場｜台北市中山區附近停車場｜Times停車場"
+      },
+      "liveRequest": "https://taipeipark-test-20261110.audihsu.chatgpt.site/api/address?q=%E8%87%BA%E5%8C%97%E5%B8%82%E4%B8%AD%E5%B1%B1%E5%8D%80%E9%8C%A6%E5%B7%9E%E8%A1%9730%E5%B7%B72%E8%99%9F",
+      "liveResponse": {
+        "match": {
+          "address": "臺北市中山區錦州街30巷2號",
+          "lat": 25.0600295,
+          "lon": 121.5246931
+        },
+        "source": "https://data.taipei/dataset/detail?id=b7c8e724-1e98-45ee-a0bd-f3840623ed97",
+        "updated": "2026-11-02 10:32:43 Asia/Taipei",
+        "sha256": "51b3d530445f5f6cc742ae4b0f2598891f48e760958278e500cf5a1d52c752e3",
+        "precision": "official-address-point"
+      },
+      "actualToOperatorMeters": 11.605043673525092,
+      "actualToFrozenMeters": 19.725151368627937,
+      "operatorToFrozenMeters": 17.075914454646288,
+      "precision": "Exact requested door point, independently corroborated parking-site context within frozen150m; not entrance validation",
+      "priorOutcome": "manual-review",
+      "reviewOutcome": "Pass",
+      "reviewBasis": "Relative-address automatic guard is not removed. These four cases individually have independent operator identity/address/navigation evidence plus exact official query-door match. No coordinates or expected sample changed."
+    }
+  ],
+  "counts": {
+    "manual-review": 19,
+    "Pass": 65,
+    "confirmation-required": 13,
+    "spatial-review": 3
+  }
+}

@@ -1,0 +1,68 @@
+--- live-v2-safety
++++ local-metadata-v2
+@@ -38,8 +38,7 @@
+     if(url.pathname==='/api/data-coverage')return request.method==='GET'?Response.json(DATA_AUDIT,{headers:{'Cache-Control':'no-store'}}):new Response('Method not allowed',{status:405});
+     if(url.pathname==='/data-coverage')return new Response(COVERAGE_HTML,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache'}});
+     if(url.pathname==='/api/road-nearby') return roadNearby(request);
+-    // Public test site: imports are disabled; read-only inspection remains available.
+-    if(url.pathname==='/internal/address-import') return request.method==='GET' ? d1Admin(request,env) : Response.json({error:'Public import endpoint is read-only; use a reviewed protected migration workflow'},{status:405,headers:{'Allow':'GET','Cache-Control':'no-store'}});
++    if(url.pathname==='/internal/address-import') return d1Admin(request,env);
+     if(url.pathname==='/api/address') return d1Address(request,env);
+     if(url.pathname==='/api/geocode') return geocode(request);
+     if(url.pathname==='/api/resolve-maps') return resolveMaps(request);
+@@ -118,14 +117,16 @@
+ 
+ const VERIFIED_ADDRESS_REFERENCES = {"checkedAt":"2026-11-10T03:28:04.738613+00:00","precision":"Address-associated parking-site representative point, not verified entrance or surveyed door","policy":"Exact full address only; two separately identified sources corroborate entity/address and coordinates; no relative-address or neighboring-number substitution","rows":[{"address":"臺北市萬華區艋舺大道462號","name":"萬板地下停車場","lat":25.027966,"lon":121.490524,"addressSource":"https://www.gov.taipei/News_Content.aspx?n=D0042A87C2F0270A&s=D7387E34E1345ACB","coordinateSource":"https://www.plugshare.com/location/285347","evidence":"2026/06/01起官方委外公告確認完整地址；獨立PlugShare場站頁同名、同完整地址，明示25.027966,121.490524；與停管處公告點約11公尺。","provider":"PlugShare public station location; crowd-sourced corroboration, not field survey"},{"address":"臺北市中山區雙城街18巷5號","name":"雙城停車場","lat":25.065524,"lon":121.5237871,"addressSource":"https://atis.taipei.gov.tw/aspx/park/parkF.aspx?lang=zh-Hant-TW&region=%E4%B8%AD%E5%B1%B1%E5%8D%80&sn=TPE0259","coordinateSource":"https://www.openstreetmap.org/way/291504144","evidence":"官方ATIS及停管處XML均確認雙城街18巷5號空地；獨立OSM parking實體雙城街停車場在相同區/巷，座標與公告點約18公尺，非其他行政區同名結果。OSM未提供門牌號碼，門牌來自官方資料，非假稱OSM有門牌。","provider":"OpenStreetMap contributors ODbL1.0"}]};
+ 
+-const D1_SNAPSHOT_ID='door-42015a39689740c2bf8a1ef1-ref-251f7a27f3';
++const D1_SNAPSHOT_ID='door-42015a39689740c2bf8a1ef1-ref-251f7a27f3-meta2';
++const D1_MANIFEST=Object.freeze({doors:251431,conflicts:15,references:3});
++function metadataMatches(s){return !!s && s.index_sha256===D1_INDEX_SHA && s.source_sha256===ADDRESS_META.sha256 && Object.entries(D1_MANIFEST).every(([k,n])=>s['expected_'+k]===n);}
+ const D1_INDEX_SHA='42015a39689740c2bf8a1ef1e6c695ae4765ef25564d174bddd8600c1bbcaa4d';
+ async function d1Address(request,env){
+  const unavailable=()=>Response.json({error:'Official address snapshot unavailable',unavailable:true},{status:503});
+  try{
+   if(!env.DB)return unavailable();
+-  const snap=await env.DB.prepare('SELECT state,index_sha256 FROM address_snapshot WHERE snapshot_id=?').bind(D1_SNAPSHOT_ID).first();
+-  if(snap?.state!=='verified'||snap.index_sha256!==D1_INDEX_SHA)return unavailable();
++  const snap=await env.DB.prepare('SELECT * FROM address_snapshot WHERE snapshot_id=?').bind(D1_SNAPSHOT_ID).first();
++  if(snap?.state!=='verified'||!metadataMatches(snap))return unavailable();
+   const q=(new URL(request.url).searchParams.get('q')||'').normalize('NFKC').replace(/臺/g,'台').replace(/\s+/g,'').replace(/之/g,'-'),key=q.replace(/^台北市/,'');
+   if(request.method!=='GET'||!q||q.length>200)return Response.json({error:'Invalid address'},{status:400});
+   const reply=value=>Response.json(value,{headers:{'Cache-Control':'public, max-age=86400','X-Data-Source':value.provider==='verified-address'?'Cross-checked official address and independent site map':'Taipei Civil Affairs official address snapshot'}});
+@@ -140,7 +141,8 @@
+   return reply({match:null,reason:rows.length?'Ambiguous address':'No exact official address'});
+  }catch{return unavailable()}
+ }
+-// Owner-private Site only: Sites dispatch authenticates browser/service access.
++// Public Site: write operations fail closed unless a separate server-only import credential is configured.
++// Never rely on Site audience or bypass-service access for public write authorization.
+ // No arbitrary SQL, no unrelated tables, no runtime schema changes.
+ async function d1Admin(request,env){
+  if(!env.DB)return Response.json({error:'DB unavailable'},{status:503});
+@@ -153,17 +155,21 @@
+    const [t,cols]=tables[kind];const result=await env.DB.prepare('SELECT '+cols.join(',')+' FROM '+t+' WHERE snapshot_id=? AND address_key>? ORDER BY address_key LIMIT 2000').bind(D1_SNAPSHOT_ID,u.searchParams.get('after')||'').all();return Response.json(result.results);
+   }
+   if(request.method!=='POST')return Response.json({error:'Method not allowed'},{status:405});
++  const token=env.ADDRESS_IMPORT_TOKEN;
++  if(typeof token!=='string'||token.length<32||request.headers.get('X-Address-Import-Token')!==token)return Response.json({error:'Import authorization required'},{status:403});
+   const body=await request.json();if(body.snapshotId!==D1_SNAPSHOT_ID)return Response.json({error:'Wrong snapshot'},{status:400});
+   if(body.kind==='snapshot'){
+    if(body.indexSha!==D1_INDEX_SHA||body.sourceSha!==ADDRESS_META.sha256)return Response.json({error:'Source mismatch'},{status:400});
+-   await env.DB.prepare("INSERT OR IGNORE INTO address_snapshot VALUES (?,?,?,?,?,?,?,'loading')").bind(D1_SNAPSHOT_ID,body.sourceSha,body.indexSha,JSON.stringify(body.meta),251431,15,2).run();return Response.json({ok:true});
++   await env.DB.prepare("INSERT OR IGNORE INTO address_snapshot VALUES (?,?,?,?,?,?,?,'loading')").bind(D1_SNAPSHOT_ID,body.sourceSha,body.indexSha,JSON.stringify(body.meta),D1_MANIFEST.doors,D1_MANIFEST.conflicts,D1_MANIFEST.references).run();return Response.json({ok:true});
+   }
+-  const snap=await env.DB.prepare('SELECT state FROM address_snapshot WHERE snapshot_id=?').bind(D1_SNAPSHOT_ID).first();
++  const snap=await env.DB.prepare('SELECT * FROM address_snapshot WHERE snapshot_id=?').bind(D1_SNAPSHOT_ID).first();
+   if(!snap)return Response.json({error:'Initialize snapshot first'},{status:409});
+   if(body.kind==='verify'){
+    if(body.readbackSha!==D1_INDEX_SHA)return Response.json({error:'Readback hash required'},{status:400});
+-   const expected={doors:251431,conflicts:15,references:3};for(const [k,[t]] of Object.entries(tables)){const row=await env.DB.prepare('SELECT COUNT(*) AS n FROM '+t+' WHERE snapshot_id=?').bind(D1_SNAPSHOT_ID).first();if(row.n!==expected[k])return Response.json({error:'Incomplete '+k},{status:409})}
+-   await env.DB.prepare("UPDATE address_snapshot SET state='verified' WHERE snapshot_id=?").bind(D1_SNAPSHOT_ID).run();return Response.json({ok:true});
++   if(!metadataMatches(snap))return Response.json({error:'Snapshot metadata does not match reviewed manifest'},{status:409});
++   const expected=D1_MANIFEST;for(const [k,[t]] of Object.entries(tables)){const row=await env.DB.prepare('SELECT COUNT(*) AS n FROM '+t+' WHERE snapshot_id=?').bind(D1_SNAPSHOT_ID).first();if(row.n!==expected[k])return Response.json({error:'Incomplete '+k},{status:409})}
++   if(snap.state==='verified')return Response.json({ok:true,unchanged:true});
++   await env.DB.prepare("UPDATE address_snapshot SET state='verified' WHERE snapshot_id=? AND state='loading'").bind(D1_SNAPSHOT_ID).run();return Response.json({ok:true});
+   }
+   if(snap.state!=='loading')return Response.json({error:'Verified snapshot is immutable'},{status:409});
+   if(!tables[body.kind]||!Array.isArray(body.rows)||!body.rows.length||body.rows.length>1000)return Response.json({error:'Invalid batch'},{status:400});

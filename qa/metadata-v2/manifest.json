@@ -1,0 +1,10 @@
+{
+  "snapshotId": "door-42015a39689740c2bf8a1ef1-ref-251f7a27f3-meta2",
+  "counts": {
+    "doors": 251431,
+    "conflicts": 15,
+    "references": 3
+  },
+  "sourceSha256": "51b3d530445f5f6cc742ae4b0f2598891f48e760958278e500cf5a1d52c752e3",
+  "indexSha256": "42015a39689740c2bf8a1ef1e6c695ae4765ef25564d174bddd8600c1bbcaa4d"
+}

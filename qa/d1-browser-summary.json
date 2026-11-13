@@ -1,0 +1,26 @@
+{
+  "environment": "cloud Browser, deployed isolated test v2",
+  "cityHall": [
+    25.037523,
+    121.563784
+  ],
+  "nangangHall1": [
+    25.056376,
+    121.617345
+  ],
+  "nangangHall2": [
+    25.056311,
+    121.616344
+  ],
+  "genericNangang": "explicit hall selection required; not precise-location Pass",
+  "guling138": [
+    25.022322,
+    121.518952
+  ],
+  "originalTen": "9 located;1 ambiguous hall query requires clarification",
+  "conflict": "松江路126號 rejected",
+  "sourceReload": true,
+  "feeSortUnknownLast": true,
+  "missingSnapshot": "explicit failure, no guessed location",
+  "not100Browser": true
+}

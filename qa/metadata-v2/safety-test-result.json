@@ -1,0 +1,13 @@
+{
+  "checkedAt": "2026-11-12T11:42:50.041Z",
+  "tests": [
+    "POST blocked",
+    "PUT blocked",
+    "DELETE blocked",
+    "PATCH blocked",
+    "zero DB access for writes",
+    "GET reaches original read handler",
+    "homepage unchanged accessible"
+  ],
+  "passed": 7
+}

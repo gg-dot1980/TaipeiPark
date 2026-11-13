@@ -1,0 +1,17 @@
+{
+  "sampleSha256": "da4dd9d78b4cfedf01ac4f663754e39ba68808d1f31d2d7e2c611a2d4156e7b7",
+  "scope": "local SQLite + client fixed100, recorded external API replay; not fresh cloud or Browser",
+  "cases": 100,
+  "existing69Preserved": true,
+  "newPass": 0,
+  "passCount": 69,
+  "regressions": [],
+  "locationClassifications": {
+    "address-concordant": 84,
+    "unresolved": 5,
+    "confirmation-required": 8,
+    "spatial-review": 2,
+    "approximate": 1
+  },
+  "promotionAllowed": false
+}

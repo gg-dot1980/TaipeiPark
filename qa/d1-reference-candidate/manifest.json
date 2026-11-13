@@ -1,0 +1,12 @@
+{
+  "mode": "local-only future snapshot fixture; cloud immutable snapshot untouched",
+  "snapshotId": "door-42015a39689740c2bf8a1ef1-ref-251f7a27f3",
+  "counts": {
+    "address_door": 251431,
+    "address_conflict": 15,
+    "address_reference": 3
+  },
+  "newReference": "NEXT-089-candidate-reference.json",
+  "workerSha256": "02362408d7125bd81915be4020167beeb67dcf862cc99cf59ed900a845e43f02",
+  "deploymentAllowed": false
+}

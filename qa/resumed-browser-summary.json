@@ -1,0 +1,66 @@
+{
+  "checkedAt": "2026-11-10T09:29:34Z",
+  "mode": "Cloud Browser via official managed preview, local read-only SQLite D1 adapter; not cloud D1 retest",
+  "candidateSha256": "3d08934d06f033a46136d21ac256ee9c2b5467db14ad9ba4af38c630f940d16e",
+  "sampleSha256": "da4dd9d78b4cfedf01ac4f663754e39ba68808d1f31d2d7e2c611a2d4156e7b7",
+  "precisePassRateStill": 0.6,
+  "published": false,
+  "safetyCases": {
+    "NEXT-005": "相對地址拒絕",
+    "NEXT-013": "多門牌拒絕",
+    "NEXT-042": "多門牌拒絕",
+    "NEXT-044": "臨時門牌拒絕",
+    "NEXT-085": "多門牌拒絕",
+    "松江路126號": "官方座標衝突拒絕",
+    "南港展覽館": "館別歧義需指定"
+  },
+  "located": {
+    "牯嶺街138號": [
+      25.022322,
+      121.518952
+    ],
+    "台北市政府": [
+      25.037523,
+      121.563784
+    ],
+    "南港展覽館1館": [
+      25.056376,
+      121.617345
+    ],
+    "南港展覽館2館": [
+      25.056311,
+      121.616344
+    ],
+    "台北車站": [
+      25.046243,
+      121.517475
+    ],
+    "台北101": [
+      25.033835,
+      121.564499
+    ]
+  },
+  "ui": {
+    "feeSortObserved": [
+      30,
+      30,
+      30,
+      60,
+      80,
+      100,
+      100
+    ],
+    "availabilityTimeObserved": "2026/11/10 下午5:25:00",
+    "driveAndWalkLinksVisible": true,
+    "defaultPositionExplicitAfterReject": true
+  },
+  "limitations": [
+    "不是100筆Browser或雲端D1重測",
+    "中途資料載入中的點擊未被當作成功，松江路及台北101重新執行後才記錄完成結果",
+    "瀏覽器檔案系統唯讀，未保存原始DOM快照或截圖；此檔為工具可見結果轉錄",
+    "五筆安全拒絕不增加精確定位Pass",
+    "尚缺40筆獨立位置證據，沒有放寬150m判準"
+  ],
+  "sourceChange": "修正input-validation來源標籤及重載provider保留；移除重複句點",
+  "offlineReplay": "重新跑100筆，95筆actual不變，5筆明確拒絕；原60Pass不變，13邊界檢查成功"
+}

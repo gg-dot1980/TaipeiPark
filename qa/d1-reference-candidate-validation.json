@@ -1,0 +1,33 @@
+{
+  "mode": "local D1 SQL fixture + recorded upstream responses, not live cloud or Browser",
+  "cases": 100,
+  "previous60PassUnchanged": true,
+  "unchangedActual": 94,
+  "changed": [
+    "NEXT-005",
+    "NEXT-013",
+    "NEXT-042",
+    "NEXT-044",
+    "NEXT-085",
+    "NEXT-089"
+  ],
+  "safeRejections": 5,
+  "newAddressReferenceCase": "NEXT-089",
+  "newReferenceDistanceMeters": 27,
+  "checkedAtFixed": true,
+  "targetedApiResponse": {
+    "match": {
+      "address": "臺北市北投區文林北路209號",
+      "name": "Times 文林北路",
+      "lat": 25.1079966,
+      "lon": 121.5136593
+    },
+    "provider": "verified-address",
+    "source": "https://www.park24.com.tw/service_locations/park-detail-BUK0061029/?business=2&traffic=1",
+    "addressSource": "https://atis.taipei.gov.tw/aspx/park/parkF.aspx?lang=zh-Hant-TW&sn=TPE1510",
+    "checkedAt": "2026-11-10T09:39:09.533615+00:00",
+    "precision": "address-reference"
+  },
+  "cloudPrecisePassUnchangedByCandidate": true,
+  "productionPromotionAllowed": false
+}

@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-11-12T11:44:15.234427+00:00",
+  "requests": [
+    {
+      "method": "POST",
+      "path": "/internal/address-import",
+      "status": 403,
+      "allow": null,
+      "body": "error code: 1010\n"
+    },
+    {
+      "method": "GET",
+      "path": "/internal/address-import?kind=status",
+      "status": 403,
+      "allow": null,
+      "body": "error code: 1010\n"
+    },
+    {
+      "method": "GET",
+      "path": "/api/address?q=%E8%87%BA%E5%8C%97%E5%B8%82%E5%8C%97%E6%8A%95%E5%8D%80%E6%96%87%E6%9E%97%E5%8C%97%E8%B7%AF209%E8%99%9F",
+      "status": 403,
+      "allow": null,
+      "body": "error code: 1010\n"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "scope": "NUC HTTP with existing Sites-issued service credential, no new credential",
+  "postStatus": 405,
+  "allow": "GET",
+  "statusGet": 200,
+  "counts": {
+    "doors": 251431,
+    "conflicts": 15,
+    "references": 3
+  },
+  "addressGet": 200,
+  "addressProvider": "verified-address",
+  "addressPrecision": "address-reference",
+  "anonymousHttp": 403,
+  "browserVerified": false
+}

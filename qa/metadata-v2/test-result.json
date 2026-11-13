@@ -1,0 +1,18 @@
+{
+  "checkedAt": "2026-11-12T11:41:57.395Z",
+  "scope": "Local actual SQLite + Worker handler; not cloud/browser",
+  "passed": 11,
+  "checks": [
+    "Unauthenticated writes rejected",
+    "Missing configured credential fails closed",
+    "Metadata expected2 actual3 rejected",
+    "Bad metadata cannot serve address",
+    "Bad readback hash rejected",
+    "Correct manifest/metadata/actual3 accepted",
+    "Verified content immutable",
+    "Re-verification read-only idempotent",
+    "Missing actual row rejected",
+    "Reference query returns labeled source",
+    "Old snapshot preserved with original metadata"
+  ]
+}

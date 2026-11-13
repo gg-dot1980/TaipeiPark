@@ -1,7 +1,3 @@
-dist/
-site.tar.gz
-
-.env*
+node_modules/
+.sites/
 *.sqlite
-.openai/hosting.json
-.venv/
