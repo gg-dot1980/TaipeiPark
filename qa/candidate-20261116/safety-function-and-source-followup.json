@@ -1,0 +1,54 @@
+{
+  "date": "2026-11-16",
+  "environment": "gg cloud computer",
+  "hypothesis": "The candidate preserves production availability classification and Taiwan service-time gating; new primary diagrams might supply missing independent location evidence",
+  "functionalChecks": {
+    "method": "Extract actual production/candidate selectedTypes/timeGate/classify functions into Node VM; identical controlled inputs",
+    "passed": 14,
+    "total": 14,
+    "cases": {
+      "fresh": "open",
+      "stale": "uncertain",
+      "future": "uncertain",
+      "zero": "uncertain",
+      "negative": "uncertain",
+      "missingtime": "uncertain",
+      "unknownrules": "uncertain",
+      "prohibited": "restricted",
+      "roadstale": "location",
+      "wrongvehicle": "exclude",
+      "dayInside": true,
+      "dayOutside": false,
+      "overnightInside": true,
+      "overnightOutside": false
+    },
+    "productionCandidateSame": true
+  },
+  "sources": [
+    {
+      "caseId": "NEXT-015",
+      "url": "https://www.lkjh.tp.edu.tw/wp-content/uploads/doc/lkjh302/%E4%BA%BA%E8%BB%8A%E5%88%86%E9%81%93%E6%83%85%E5%BD%A2%E6%88%90%E6%9E%9C.pdf",
+      "result": "Search indexed school movement diagram; direct source open returned404. No independent coordinate accepted."
+    },
+    {
+      "caseId": "NEXT-094",
+      "url": "https://www-ws.gov.taipei/001/Upload/455/relfile/22477/8454818/cc2df50d-fde8-49f8-864c-02fc53cc39c4.pdf",
+      "page": 4,
+      "result": "Official 4-page parking-plan PDF retrieved; page4 identifies Xinglong229 parking layout, but text provides no georeferenced coordinates. Published address remains7號對面, not the fixed query7號. Do not infer a precise point or silently substitute the lot."
+    }
+  ],
+  "acceptance": {
+    "fixedSampleUnchanged": true,
+    "qualifiedPass": 70,
+    "threshold": 85,
+    "newPass": 0,
+    "rerun100": false,
+    "reason": "No new independently qualified query-to-location evidence; avoid unchanged replay"
+  },
+  "limits": [
+    "Controlled function tests not Browser",
+    "No changes to deployed source/liveD1",
+    "School source404 and relative-address ambiguity remain",
+    "No comprehensive functional acceptance claim"
+  ]
+}
