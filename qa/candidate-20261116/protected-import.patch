@@ -1,0 +1,31 @@
+--- fushan-integrated-worker.js
++++ protected-import-candidate.js
+@@ -160,7 +160,13 @@
+   const body=await request.json();if(body.snapshotId!==D1_SNAPSHOT_ID)return Response.json({error:'Wrong snapshot'},{status:400});
+   if(body.kind==='snapshot'){
+    if(body.indexSha!==D1_INDEX_SHA||body.sourceSha!==ADDRESS_META.sha256)return Response.json({error:'Source mismatch'},{status:400});
+-   await env.DB.prepare("INSERT OR IGNORE INTO address_snapshot VALUES (?,?,?,?,?,?,?,'loading')").bind(D1_SNAPSHOT_ID,body.sourceSha,body.indexSha,JSON.stringify(body.meta),D1_MANIFEST.doors,D1_MANIFEST.conflicts,D1_MANIFEST.references).run();return Response.json({ok:true});
++   const metaText=JSON.stringify(body.meta);if(typeof metaText!=='string')return Response.json({error:'Metadata required'},{status:400});
++   const sameInit=x=>metadataMatches(x)&&x.meta_json===metaText;
++   const prior=await env.DB.prepare('SELECT * FROM address_snapshot WHERE snapshot_id=?').bind(D1_SNAPSHOT_ID).first();
++   if(prior)return sameInit(prior)?Response.json({ok:true,unchanged:true}):Response.json({error:'Conflicting snapshot retry'},{status:409});
++   await env.DB.prepare("INSERT OR IGNORE INTO address_snapshot VALUES (?,?,?,?,?,?,?,'loading')").bind(D1_SNAPSHOT_ID,body.sourceSha,body.indexSha,metaText,D1_MANIFEST.doors,D1_MANIFEST.conflicts,D1_MANIFEST.references).run();
++   const saved=await env.DB.prepare('SELECT * FROM address_snapshot WHERE snapshot_id=?').bind(D1_SNAPSHOT_ID).first();
++   return sameInit(saved)?Response.json({ok:true}):Response.json({error:'Snapshot readback conflict'},{status:409});
+   }
+   const snap=await env.DB.prepare('SELECT * FROM address_snapshot WHERE snapshot_id=?').bind(D1_SNAPSHOT_ID).first();
+   if(!snap)return Response.json({error:'Initialize snapshot first'},{status:409});
+@@ -175,8 +181,12 @@
+   if(!tables[body.kind]||!Array.isArray(body.rows)||!body.rows.length||body.rows.length>1000)return Response.json({error:'Invalid batch'},{status:400});
+   const [t,cols]=tables[body.kind];
+   for(const r of body.rows){if(r.length!==cols.length||typeof r[0]!=='string'||r[0].length>200)return Response.json({error:'Invalid row'},{status:400});if(body.kind!=='conflicts'){const offset=body.kind==='doors'?2:1;if(!Number.isInteger(r[offset])||!Number.isInteger(r[offset+1])||r[offset]<247000000||r[offset]>255000000||r[offset+1]<1213000000||r[offset+1]>1218000000)return Response.json({error:'Invalid coordinates'},{status:400})}}
++  const unique=new Map();for(const r of body.rows){const prev=unique.get(r[0]);if(prev&&JSON.stringify(prev)!==JSON.stringify(r))return Response.json({error:'Conflicting duplicate in batch'},{status:409});unique.set(r[0],r)}
++  const sameRow=(saved,r)=>!!saved&&cols.every((c,i)=>saved[c]===r[i]);
++  const readRow=r=>env.DB.prepare('SELECT '+cols.join(',')+' FROM '+t+' WHERE snapshot_id=? AND address_key=?').bind(D1_SNAPSHOT_ID,r[0]).first();
++  for(const r of unique.values()){const prior=await readRow(r);if(prior&&!sameRow(prior,r))return Response.json({error:'Conflicting row retry'},{status:409})}
+   const per=Math.floor(100/(cols.length+1)),statements=[];
+   for(let i=0;i<body.rows.length;i+=per){const rows=body.rows.slice(i,i+per).map(r=>[D1_SNAPSHOT_ID,...r]);statements.push(env.DB.prepare('INSERT OR IGNORE INTO '+t+' (snapshot_id,'+cols.join(',')+') VALUES '+rows.map(()=> '('+Array(cols.length+1).fill('?').join(',')+')').join(',')).bind(...rows.flat()))}
+-  await env.DB.batch(statements);return Response.json({ok:true,rows:body.rows.length});
++  await env.DB.batch(statements);for(const r of unique.values())if(!sameRow(await readRow(r),r))return Response.json({error:'Batch readback conflict'},{status:409});return Response.json({ok:true,rows:unique.size});
+  }catch{return Response.json({error:'Database operation failed'},{status:503})}
+ }

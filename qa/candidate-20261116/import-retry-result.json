@@ -1,0 +1,19 @@
+{
+  "checkedAt": "2026-11-16T07:43:16.419Z",
+  "scope": "Separate minimal real SQLite fixture plus actual Worker; not cloud D1 or full batch transaction emulation",
+  "passed": 12,
+  "checks": [
+    "no token rejected",
+    "first snapshot insert",
+    "identical snapshot retry",
+    "conflicting snapshot retry",
+    "new row",
+    "same row idempotent",
+    "conflicting existing row",
+    "conflicting batch duplicates",
+    "conflicts preserve original row and count",
+    "incomplete manifest cannot verify",
+    "verified snapshot immutable",
+    "SQLite integrity"
+  ]
+}
