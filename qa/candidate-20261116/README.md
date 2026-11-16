@@ -1,3 +1,5 @@
+> Superseded migration status: see [2026-11-16 live migration gates](../migration-gates-20261116/README.md). Test v5 now uses the new verified snapshot. The original local-only notes below are historical; 85/100 is now a post-migration improvement target, not the migration release gate.
+
 # 2026-11-16 local candidate: 70 / 100
 This is a source/evidence checkpoint on test-d1, not a Site deployment or live D1 migration. Production main/v30, deployed test v2 and existing test branch files remain unchanged.
 

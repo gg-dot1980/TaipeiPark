@@ -1,0 +1,13 @@
+{
+  "sitesVersion": 5,
+  "sitesSourceCommit": "8375951e81425783d17eb539e7d3c52ce7359b60",
+  "workerSha256": "1fdf9a3f12aefa497a24079a6feceae3109172696fd3125b8f7941ff8a7d8ca8",
+  "secretRemoved": true,
+  "environmentRevision": 2,
+  "public": true,
+  "productionUnchangedVersion": 30,
+  "browserGatePassed": false,
+  "locationAcceptance": 70,
+  "location85Gate": "Deferred until after migration per user latest instruction",
+  "backupRestoreScope": "Application-layer new isolated snapshot, not database overwrite or D1 Time Travel"
+}
