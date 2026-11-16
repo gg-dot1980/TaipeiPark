@@ -1,0 +1,32 @@
+{
+  "checkedAt": "2026-11-16T06:33:33.791Z",
+  "passed": 7,
+  "checks": [
+    "actual resolveDest exact named official point",
+    "shared campus address never intercepted",
+    "different school not fuzzy matched",
+    "generic duplicate names fail closed",
+    "invalid geometry rejected",
+    "missing provenance rejected",
+    "entity path makes no unexpected external requests"
+  ],
+  "actual": {
+    "lat": 25.020797779252113,
+    "lon": 121.54229620209323,
+    "name": "辛亥地下停車場(汽機車)",
+    "input": "國立臺灣大學辛亥地下停車場",
+    "resolution": {
+      "provider": "official-parking-reference",
+      "requested": "國立臺灣大學辛亥地下停車場",
+      "name": "辛亥地下停車場(汽機車)",
+      "precision": "parking-site-reference",
+      "accepted": true,
+      "entranceVerified": false,
+      "sourceUrl": "https://map.ntu.edu.tw/ntuga/public/ntumap.htm?action=search&keyword=%E8%BE%9B%E4%BA%A5&locale=zh-TW",
+      "sourceRecord": "TR022-C-01",
+      "sourceCheckedAt": "2026-11-16T06:30:55.719352+00:00",
+      "via": "官方場站名稱精確比對（場址參考點，非入口驗證）"
+    }
+  },
+  "scope": "real resolveDest candidate with DOM stub; not browser"
+}
