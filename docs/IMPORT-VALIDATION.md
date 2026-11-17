@@ -1,3 +1,5 @@
+> Historical v30 record. Current production v32 migration and backup limits: [v32 record](releases/v32/README.md).
+
 # Import validation, 2026-11-12
 
 - Production v30 source: ba1bd5c93349dba31d70d3b0978bbfbd0c45fd8e.

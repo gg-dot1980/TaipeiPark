@@ -1,3 +1,5 @@
+> Production is now Sites v32 with D1. See [v32 deployment provenance, validation and data limits](docs/releases/v32/README.md). GitHub sync SHA differs from the Sites source SHA.
+
 # TaipeiPark
 
 Source tracking for the public Taipei parking application: https://taipeipark.audihsu.chatgpt.site
@@ -14,7 +16,8 @@ Requires Node.js, Python 3 (`python` command), and Bash. No application dependen
 python -m venv .venv
 . .venv/bin/activate
 python -m pip install --index-url https://pypi.org/simple -r requirements-test.txt
-cp .openai/hosting.json.example .openai/hosting.json
+# Production hosting.json already contains the authorized v32 project and D1 binding.
+# For a separate deployment, configure your own authorized project and D1 binding.
 # Set your own authorized Sites project ID before deploying.
 npm test
 npm run build

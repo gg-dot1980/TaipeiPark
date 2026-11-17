@@ -1,3 +1,5 @@
+> Historical v30 record. Current production v32 migration and backup limits: [v32 record](releases/v32/README.md).
+
 # Database construction and limitations
 
 Production v30 is represented by the bundled Worker and public data. It must not be described as having completed the D1 migration.

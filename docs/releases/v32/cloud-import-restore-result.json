@@ -1,0 +1,23 @@
+{
+  "startedAt": "2026-11-17T02:29:49.380668+00:00",
+  "scope": "Production import of verified public backup plus sourced Fushan; v30 frontend retained until activation",
+  "snapshot": "door-42015a39689740c2bf8a1ef1-ref-251f7a27f3-meta2-fushan",
+  "checks": [
+    "unauthenticated staging POST403",
+    "snapshot initialize/retry/conflict safe",
+    "identical row retry200 conflicting retry409",
+    "doors full cloud readback exact",
+    "conflicts full cloud readback exact",
+    "references full cloud readback exact",
+    "verified immutable; verify retry read-only",
+    "v30 frontend retained while staging; original source archived"
+  ],
+  "importedRows": 251450,
+  "completedAt": "2026-11-17T03:16:06.421371+00:00",
+  "counts": {
+    "doors": 251431,
+    "conflicts": 15,
+    "references": 4
+  },
+  "success": true
+}
