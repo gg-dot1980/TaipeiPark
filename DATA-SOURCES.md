@@ -1,11 +1,45 @@
-# Official files retained
+# TaipeiPark 資料來源與再利用說明
 
-Only the following raw official resources are eligible in this tree (where present):
+查核日期：2026-11-17（台灣時間）。本頁只提供來源、用途、日期與限制，不提供地圖、補充定位紀錄、私有資料包或金鑰。
 
-- `data/road-fees/source.ods`: 臺北市停車管理工程處, 2026-03-27 fee ODS; https://data.taipei/dataset/detail?id=99392a71-4e8a-42e1-b605-20dfa7bb5f8c
-- `data/source-snapshots/commercial-shared-stops.csv`: 臺北市停車管理工程處, 2026-10-15 shared commercial stops CSV; https://data.taipei/dataset/detail?id=5a911ea5-1694-4301-808e-e1780d971611
+## 官方來源
 
-License: 政府資料開放授權條款第1版 (OGDL 1.0), https://data.taipei/rule .
-The raw files are unchanged. Preserve agency, version/date, source and license attribution.
-Their license does not cover unrelated or mixed third-party datasets. All derived map
-products and uncertain-license PDF/XML/calendar copies are withheld from this tree.
+下列日期是官方下載項目或詮釋資料的更新時間，**不等於正式站已更新至該版本**，也不代表即時餘位的觀測時間。實際部署資料版本須依該次匯入及驗證紀錄確認。
+
+| 資料／提供機關 | 官方來源 | 用途 | 官方頁面所列更新日／限制 | GitHub 目前範圍 |
+| --- | --- | --- | --- | --- |
+| 各行政區路邊收費路段資訊／交通局停管處 | [資料集](https://data.taipei/dataset/detail?id=99392a71-4e8a-42e1-b605-20dfa7bb5f8c) | 查核收費路段、時段與費率 | ODS：2026-03-27；詮釋資料：2026-10-06。不定期更新，不視為現場即時費率保證。 | 保留原始 `data/road-fees/source.ods`，不含地圖配對產物。 |
+| 營業用共用臨停區的位置與數量／交通局停管處 | [路邊停車格位資料集](https://data.taipei/dataset/detail?id=5a911ea5-1694-4301-808e-e1780d971611) | 查核官方共用臨停區及數量 | CSV：2026-10-15。位置與數量不代表即時可停。 | 保留原始 `data/source-snapshots/commercial-shared-stops.csv`，不新增衍生地圖。 |
+| 路邊停車格位／交通局停管處 | [資料集](https://data.taipei/dataset/detail?id=5a911ea5-1694-4301-808e-e1780d971611) | 官方格位類型與位置來源；用於位置品質核對 | SHP：2026-10-06。靜態格位不等於即時空位。 | 僅來源說明；SHP、地圖索引、配對與隔離定位資料不在目前公開樹。 |
+| 門牌位置數值資料／民政局 | [資料集](https://data.taipei/dataset/detail?id=b7c8e724-1e98-45ee-a0bd-f3840623ed97) | 門牌查詢與座標衝突核對；門牌位置不等於車輛入口 | CSV：2026-11-02；官方標示每月更新。 | 僅來源說明與資料庫 schema；完整門牌索引、SQL／SQLite 備份不在目前公開樹。 |
+| 停車場資訊／交通局停管處 | [資料集](https://data.taipei/dataset/detail?id=d5c0656b-5250-4179-a491-c94daa56ef2c) | 停車場基本資訊、費率及剩餘車位資料來源 | 頁面目前列資訊 V2、剩餘車位 V2 與 CMS 系統介接；詮釋資料更新 2026-10-21。即時性須另核對回應中的觀測時間。 | 僅來源說明。舊 XML 快照與目前 V2 的版本、欄位及授權銜接尚待核對，不將兩者視為相同資料。 |
+| 路邊停車格位使用情形／交通局停管處 | [資料集](https://data.taipei/dataset/detail?id=434638ca-8770-42c1-940d-0386a74f6eb9) | 路段使用情形與收費資訊核對 | XML 系統介接；詮釋資料更新 2026-10-06。有效時間、缺值及位置對應需逐項驗證。 | 僅來源說明；不公開舊快照及衍生定位配對資料。 |
+| 行政機關辦公日曆表／人事處 | [資料集](https://data.taipei/dataset/detail?id=c30ca421-d935-4faa-b523-9c175c8de738) | 配合個別費率規則判斷工作日／假日，不能代替停車收費公告 | CSV：2026-10-01；頁面收錄期間截至 2026-12-31。2027 覆蓋尚未確認，不推定存在。 | 僅來源說明；日曆複本暫不公開。 |
+
+## 官方資料授權與署名
+
+以上資料集頁面標示「公開」，並連結臺北市資料大平臺的[政府資料開放授權條款第 1 版（OGDL 1.0）](https://data.taipei/rule)。利用符合該條款的資料時，應保留提供機關、資料名稱、版本／年份、來源與授權註記。修改或轉換資料時，也應說明處理差異；不能將混合資料全部套用同一官方授權。
+
+本 repository 保留的兩份官方原始檔未改寫，其顯名資訊如下：
+
+- 交通局停管處，2026-03-27，臺北市各行政區路邊收費路段資訊；來源及 OGDL 1.0 如上。
+- 交通局停管處，2026-10-15，營業用共用臨停區的位置與數量；來源及 OGDL 1.0 如上。
+
+「可在官方網站瀏覽」不等於所有網頁、圖像或 PDF 都可整份再散布。停管處一般網頁 PDF 與其他未完成逐份授權核對的附件，不隨本次說明上傳。軟體套件授權亦與資料授權分開處理。
+
+## 第三方與補充來源的類別及限制
+
+| 類別 | 專案中可能用途 | 公開範圍與限制 |
+| --- | --- | --- |
+| OpenStreetMap 等地圖／地理資料 | 道路語意、地理交叉核對或地圖顯示 | 服務與資料另有各自條款；即使有開放授權，依本專案政策仍不在 GitHub 提供地圖資料、擷取點位或衍生配對。 |
+| PlugShare 等第三方地點服務 | 對場站位置提供候選線索 | 不能因可公開瀏覽就推定可再散布；不提供個別紀錄、座標或資料副本。 |
+| 營運者／場館網站、導覽圖及導航連結 | 查核名稱、地址或入口敘述 | 場址中心、門牌與入口必須區分；未獨立確認的入口或距離維持未知。不公開補充定位表、示意圖或校準結果。 |
+| 人工整理、交叉比對及 QA 證據 | 驗證來源一致性、誤差及拒絕行為 | 整理結果不是新的官方原始資料；含定位內容的測試案例、patch、截圖與混合 SQL 不加入目前公開樹。 |
+
+本頁列出來源不表示每個候選地點已驗證通過，也不改變既有測試成績。受限制資料與完整備份保留於 ChatGPT 對話 Library；公開程式需使用相符的私有資料包才能重建，詳見 [README](README.md)。
+
+## 更新規則與歷史限制
+
+新增或更新資料前，逐份記錄來源頁、提供機關、資料日期、取得日期、用途、轉換方式、授權與驗證狀態；日期或權利不明時明列未知，不猜測、不新增公開副本。
+
+本次僅更新來源文件，未上傳資料或部署網站。先前清理採一般可復原提交，舊 Git 歷史及他人副本仍可能包含已從目前分支移除的資料，不能宣稱已收回。
