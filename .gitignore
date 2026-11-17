@@ -1,5 +1,6 @@
-node_modules/
-.sites/
+dist/
+.private/
+*-private-pack.json
 *.sqlite
-qa/metadata-v2/corrected-worker.js
-*.orig
+*.sql.gz
+node_modules/

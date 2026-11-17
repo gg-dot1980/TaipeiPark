@@ -1,0 +1,176 @@
+const HTML = /*PRIVATE:HTML*/;
+function parseMaps(input){
+const s=input.trim();const coord=(a,b)=>{a=Number(a);b=Number(b);return Number.isFinite(a)&&Number.isFinite(b)&&a>=-90&&a<=90&&b>=-180&&b<=180?{lat:a,lon:b,name:'Google Maps 分享地點'}:null};
+let direct=s.match(/^(-?\d+(?:\.\d+)?)\s*[,，]\s*(-?\d+(?:\.\d+)?)$/);if(direct)return coord(direct[1],direct[2])||{error:'經緯度超出範圍'};
+let link=s.match(/https?:\/\/[^\s<>]+/i);if(!link)return {q:s};let u;try{u=new URL(link[0])}catch{return {error:'連結格式無效'}};
+if(!isGoogleHost(u.hostname))return {error:'請貼上 Google Maps 連結或輸入地址'};
+if(u.hostname==='maps.app.goo.gl'||u.hostname==='goo.gl')return {short:u.href};
+let txt=u.href;try{txt=decodeURIComponent(txt)}catch{}
+let geo=txt.match(/!3d(-?[\d.]+)!4d(-?[\d.]+)/);if(geo)return coord(geo[1],geo[2])||{error:'座標無效'};
+for(let key of ['destination','query','q']){let q=u.searchParams.get(key);if(q){let xy=q.match(/^(-?[\d.]+),\s*(-?[\d.]+)$/);if(xy)return coord(xy[1],xy[2])||{error:'座標無效'};if(!/^place_id:/.test(q))return {q};}}
+let place=txt.match(/\/maps\/(?:place|search)\/([^/?]+)/);if(place)return {q:place[1].replace(/\+/g,' ')};
+return {error:'連結只有地圖視角或地點編號，無法確認目的地；請分享地點頁，或直接輸入地址'};
+}
+function isGoogleHost(h){return /^(?:(?:www|maps)\.)?google\.(?:com|com\.tw|co\.jp)$/.test(h)||h==='maps.app.goo.gl'||h==='goo.gl'}
+async function resolveMaps(request){
+const json=(v,status=200)=>Response.json(v,{status,headers:{'Cache-Control':'no-store'}});
+if(request.method!=='GET')return json({error:'Method not allowed'},405);
+let raw=new URL(request.url).searchParams.get('url');if(!raw||raw.length>4096)return json({error:'請提供有效的 Google Maps 分享連結'},400);
+try{let u=new URL(raw);for(let i=0;i<6;i++){
+if(u.protocol!=='https:'||u.port||u.username||u.password||!isGoogleHost(u.hostname))return json({error:'不支援此分享連結'},400);
+let parsed=parseMaps(u.href);if(!parsed.short){if(parsed.error)return json(parsed,422);if(Number.isFinite(parsed.lat)){const name=googleUrlName(u.href);parsed={...parsed,name:name||'Google Maps 分享位置',resolution:{provider:'google-url',name,via:i?'Google Maps 短網址轉址':'Google Maps 網址',cache:'NONE',accepted:true}}}return json(parsed);}
+const r=await fetch(u.href,{redirect:'manual',signal:AbortSignal.timeout(10000),headers:{'User-Agent':'Mozilla/5.0'}});
+if(r.status>=300&&r.status<400&&r.headers.get('Location')){u=new URL(r.headers.get('Location'),u);continue;}
+return json({error:'Google 未提供可解析的地點；請在 Google Maps 地點頁重新分享，或輸入地址'},422);
+}return json({error:'分享連結轉址次數過多，請輸入地址'},422);
+}catch{return json({error:'Google 分享連結暫時無法展開，請稍後重試或輸入地址'},502)}}
+// Cloudflare Pages advanced mode: proxy officially published open XML sources.
+// Install with index.html on Cloudflare Pages; no API key required for official XML.
+const SOURCES = Object.freeze({
+  '/api/park-static': 'https://tcgbusfs.blob.core.windows.net/blobtcmsv/TCMSV_alldesc.xml',
+  '/api/park-live': 'https://tcgbusfs.blob.core.windows.net/blobtcmsv/TCMSV_allavailable.xml',
+  '/api/road-segments': 'https://tcgbusfs.blob.core.windows.net/blobtcmsv/TCMSV_roadquery.xml'
+});
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    const upstream = SOURCES[url.pathname];
+    if(url.pathname==='/api/data-coverage')return request.method==='GET'?Response.json(DATA_AUDIT,{headers:{'Cache-Control':'no-store'}}):new Response('Method not allowed',{status:405});
+    if(url.pathname==='/data-coverage')return new Response(COVERAGE_HTML,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache'}});
+    if(url.pathname==='/api/road-nearby') return roadNearby(request);
+    // Public test site: imports are disabled; read-only inspection remains available.
+    if(url.pathname==='/internal/address-import') return request.method==='GET' ? d1Admin(request,env) : Response.json({error:'Public import endpoint is read-only; use a reviewed protected migration workflow'},{status:405,headers:{'Allow':'GET','Cache-Control':'no-store'}});
+    if(url.pathname==='/api/address') return d1Address(request,env);
+    if(url.pathname==='/api/geocode') return geocode(request);
+    if(url.pathname==='/api/resolve-maps') return resolveMaps(request);
+    if (!upstream) { if(url.pathname==='/'||url.pathname==='/index.html')return new Response(HTML,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache'}}); return new Response('Not found',{status:404}); }
+    if (request.method !== 'GET') return new Response('Method not allowed', {status:405});
+    try {
+      const response = await fetch(upstream, {cf:{cacheTtl:url.pathname==='/api/park-static'?3600:60, cacheEverything:true}});
+      if (!response.ok) return new Response('Official feed unavailable', {status:502});
+      return new Response(response.body, {headers:{
+        'Content-Type': 'application/xml; charset=utf-8',
+        'Cache-Control': url.pathname==='/api/park-static'?'public, max-age=3600':'public, max-age=60',
+        'X-Data-Source': 'Taipei City open data',
+        'X-Content-Type-Options':'nosniff'
+      }});
+    } catch(e) {return new Response('Official feed unavailable', {status:502});}
+  }
+};
+
+const GEOCODE_CACHE_VERSION='network-v5';
+async function geocode(request){
+  const q=(new URL(request.url).searchParams.get('q')||'').trim();
+  if(request.method!=='GET'||!q||q.length>500)return Response.json({error:'Invalid query'},{status:400,headers:{'Cache-Control':'no-store'}});
+  const cache=globalThis.caches?.default;
+  const cacheKey=new Request(new URL('/__geocode-cache/'+GEOCODE_CACHE_VERSION+'?q='+encodeURIComponent(q),request.url));
+  const reply=(response,state)=>{const headers=new Headers(response.headers);headers.set('Cache-Control','no-store');headers.set('X-Geocode-Cache',state);headers.set('X-Geocode-Provider','nominatim');return new Response(response.body,{headers})};
+  if(cache){try{const saved=await cache.match(cacheKey);if(saved)return reply(saved,'HIT')}catch{}}
+  try{
+    const upstream='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=5&countrycodes=tw&q='+encodeURIComponent(q);
+    const r=await fetch(upstream,{headers:{'User-Agent':'TaipeiPark/1.0 (https://taipeipark.audihsu.chatgpt.site)','Accept-Language':'zh-TW'},signal:AbortSignal.timeout(10000)});
+    if(!r.ok)return Response.json({error:'地址服務暫時不可用'},{status:502,headers:{'Cache-Control':'no-store','X-Geocode-Provider':'nominatim'}});
+    const rows=await r.json();if(!Array.isArray(rows))throw Error('Invalid upstream geocoding data');
+    const response=Response.json(rows,{headers:{'Cache-Control':'public, max-age='+(rows.length?86400:60),'X-Geocode-Provider':'nominatim','X-Geocode-Fetched-At':new Date().toISOString()}});
+    let stored=false;if(cache){try{await cache.put(cacheKey,response.clone());stored=true}catch{}}
+    return reply(response,stored?'MISS':'BYPASS');
+  }catch{return Response.json({error:'地址服務逾時或回傳格式無效'},{status:502,headers:{'Cache-Control':'no-store','X-Geocode-Provider':'nominatim'}})}
+}
+
+/*PRIVATE:ROAD_INDEX*/
+/*PRIVATE:ROAD_QUARANTINE*/
+/*PRIVATE:ROAD_QUALITY*/
+
+function roadDistance(a,b,c,d){const rad=x=>x*Math.PI/180;return 12742000*Math.asin(Math.min(1,Math.sqrt(Math.sin(rad(c-a)/2)**2+Math.cos(rad(a))*Math.cos(rad(c))*Math.sin(rad(d-b)/2)**2)))}
+/*PRIVATE:ROAD_FEES*/
+function roadNorm(s){return String(s).replace(/臺/g,'台').replace(/([一二三四五六七八九])段/g,(_,n)=>('一二三四五六七八九'.indexOf(n)+1)+'段').replace(/\s+/g,'')}
+function xmlValue(s,tag){const value=s.match(new RegExp('<'+tag+'>([\\s\\S]*?)</'+tag+'>','i'));return value?value[1].trim():''}
+async function roadNearby(request){
+const url=new URL(request.url);if(request.method!=='GET')return Response.json({error:'Method not allowed'},{status:405});const lat=Number(url.searchParams.get('lat')),lon=Number(url.searchParams.get('lng'));if(!url.searchParams.has('lat')||!url.searchParams.has('lng')||!Number.isFinite(lat)||!Number.isFinite(lon)||lat<24||lat>26||lon<120||lon>123)return Response.json({error:'Invalid coordinates'},{status:400});
+const radius=url.searchParams.get('radius')==='1000'?1000:500;const isNear=r=>Math.abs(r[0]-lat)<0.0046*radius/500&&Math.abs(r[1]-lon)<0.0051*radius/500&&roadDistance(lat,lon,r[0],r[1])<=radius;const nearby=ROAD_INDEX.filter(isNear),quarantined=ROAD_QUARANTINE.filter(isNear).length;
+const types={'01':['car'],'03':['accessible'],'07':['freight'],'09':['car'],'10':['car'],'15':['car'],'22':['car'],'23':['car']};const notes={'03':'身障專用，須具有效資格；官方靜態位置，未經現地驗證','07':'裝卸貨專用；用途、時段與限時須依現場標誌確認','09':'限時停車，時限尚待確認','10':'時段性禁停：完整禁停規則尚待確認','15':'汽車停車彎：用途及適用條件須依現場標誌確認','22':'汽機車彈性共用：適用時段尚待確認，不當作一般汽車空位','23':'大客車與小型車共用：適用時段尚待確認'};
+const items=nearby.map(r=>({lat:r[0],lon:r[1],id:r[7],kind:'road',name:r[3]+(r[4]?' · 格位 '+r[4]:' · 未提供格號'),address:r[3],vehicleTypes:types[r[2]],ruleText:[notes[r[2]],r[5]?'圖資時段欄位：'+r[5]+'（未核定為禁停時段）':'',r[6]].filter(Boolean).join('；'),source:'臺北市官方車格圖資（檔名日期 2026-10-02；靜態位置）',availability:null,availByType:{},fresh:false,rulesUnknown:['07','09','10','15','22','23'].includes(r[2]),updated:'靜態圖資，無可驗證逐格即時空位',...roadFeeData(r)}));
+const staticSpaces=items.length,commercial=COMMERCIAL_STOPS.accepted.filter(r=>isNear([r.lat,r.lon])).map(r=>({lat:r.lat,lon:r.lon,id:r.id,kind:'road',specialUse:'commercial-stop',name:'共用臨停區 · '+r.address,address:r.district+' '+r.address,vehicleTypes:['freight'],source:'臺北市官方營業用共用臨停區 CSV（更新 2026-10-15；官方公告位置，未經現地驗證）',sourceUrl:COMMERCIAL_STOPS.meta.dataset,rulesSource:COMMERCIAL_STOPS.meta.rulesSource,updated:'靜態公告，無即時空位',availability:null,availByType:{},fresh:false,rulesUnknown:true,declaredSpaces:r.spaces,ruleText:'限20分鐘；貨車須行照標示貨車且確有裝卸，客貨兩用車不適用。亦供計程車、復康巴士、長照／福祉車、到宅沐浴車上下客貨；計程車不可排班。一般小客車不可使用，現場牌面優先。',details:'公告格位數 '+r.spaces+'（不是可用數）；周邊 '+(r.nearby||'未提供')+'。費率未提供，不推定免費。與既有裝卸格可能重疊，不加進車格總數。'}));items.push(...commercial);
+return Response.json({items,radius,quarantined,staticSpaces,commercialStopLocations:commercial.length,summary:`靜態車格 ${staticSpaces} 格；隔離 ${quarantined} 格；另有共用臨停區 ${commercial.length} 處位置參考（不計入車格數）；路邊即時空位未驗證`,audit:ROAD_QUALITY},{headers:{'Cache-Control':'no-store'}})}
+
+
+function googleUrlName(input){const link=String(input).match(/https?:\/\/[^\s<>]+/i);if(!link)return '';try{const u=new URL(link[0]);let path=u.pathname;try{path=decodeURIComponent(path)}catch{}const match=path.match(/\/maps\/(?:place|search)\/([^/]+)/);if(match&&!match[1].startsWith('@')&&!/^-?[\d.]+,/.test(match[1]))return match[1].replace(/\+/g,' ');for(const key of ['destination','query','q']){const value=u.searchParams.get(key);if(value&&!/^-?[\d.]+,/.test(value)&&!value.startsWith('place_id:'))return value}return ''}catch{return ''}}
+
+function roadFeeData(r){
+const b=ROAD_FEES.bindings[r[7]],link=ROAD_SOURCE_LINKS.links[r[7]],parts=[],out={};
+if(b&&b.lat===r[0]&&b.lon===r[1]){out.feeRules=b.rows.map(i=>ROAD_FEES.rows[i]);const first=out.feeRules[0],source=ROAD_FEES.meta.sources.find(x=>x.name+'.pdf'===first.sourceFile);out.feeSource=source?source.url+'#page='+first.sourcePage:ROAD_FEES.meta.source;
+parts.push(out.feeRules.map(z=>'官方路段：'+z.road+'（'+z.scope+'）；'+(z.mode==='hour'?'計時表':'計次表')+'；收費日 '+z.days+'；時段 '+z.time+'；費率 '+z.rate+'；來源 '+z.sourceFile+' 第'+z.sourcePage+'頁').join('\n')+'\nPDF產製：'+ROAD_FEES.meta.pdfGeneratedAt+'（非生效日期）；整理：'+ROAD_FEES.meta.preparedAt);}
+if(link&&link.lat===r[0]&&link.lon===r[1]){const z=ROAD_SOURCE_LINKS.roads[link.road];out.feeReference={...z,spaceID:link.spaceID,checkedAt:ROAD_SOURCE_LINKS.meta.checkedAt};out.feeSource??=ROAD_SOURCE_LINKS.meta.dataset;
+parts.push('官方路段原文參考：'+z.roadName+'；路段ID '+z.roadSegID+'；格號 '+link.spaceID+'；費率 '+z.feeText+'；時段 '+z.chargeStart+'–'+z.chargeEnd+'；來源時間 '+(z.sourceUpdated||'未提供')+'；核對 '+ROAD_SOURCE_LINKS.meta.checkedAt+'。此欄缺完整日別／計費單位，不推定時薪、免費、專用格適用或空位。');}
+if(parts.length)out.details=parts.join('\n');return out;
+}
+
+/*PRIVATE:ROAD_SOURCE_LINKS*/
+
+/*PRIVATE:DATA_AUDIT*/
+
+/*PRIVATE:COVERAGE_HTML*/
+
+/*PRIVATE:COMMERCIAL_STOPS*/
+
+
+/*PRIVATE:ADDRESS_META*/
+
+/*PRIVATE:VERIFIED_ADDRESS_REFERENCES*/
+
+/*PRIVATE:D1_SNAPSHOT_ID*/
+/*PRIVATE:D1_INDEX_SHA*/
+async function d1Address(request,env){
+ const unavailable=()=>Response.json({error:'Official address snapshot unavailable',unavailable:true},{status:503});
+ try{
+  if(!env.DB)return unavailable();
+  const snap=await env.DB.prepare('SELECT state,index_sha256 FROM address_snapshot WHERE snapshot_id=?').bind(D1_SNAPSHOT_ID).first();
+  if(snap?.state!=='verified'||snap.index_sha256!==D1_INDEX_SHA)return unavailable();
+  const q=(new URL(request.url).searchParams.get('q')||'').normalize('NFKC').replace(/臺/g,'台').replace(/\s+/g,'').replace(/之/g,'-'),key=q.replace(/^台北市/,'');
+  if(request.method!=='GET'||!q||q.length>200)return Response.json({error:'Invalid address'},{status:400});
+  const reply=value=>Response.json(value,{headers:{'Cache-Control':'public, max-age=86400','X-Data-Source':value.provider==='verified-address'?'Cross-checked official address and independent site map':'Taipei Civil Affairs official address snapshot'}});
+  if(!/^[^,，、]+\d+(?:-\d+)*號(?:-\d+)?$/.test(key))return reply({match:null,reason:'Single exact door required'});
+  const hasDistrict=/^[^路街\d]{1,4}區/.test(key),column=hasDistrict?'address_key':'districtless_key';
+  const conflict=await env.DB.prepare('SELECT address_key FROM address_conflict WHERE snapshot_id=? AND '+column+'=? LIMIT 1').bind(D1_SNAPSHOT_ID,key).first();
+  if(conflict)return reply({match:null,blocked:true,reason:'Official address coordinates conflict',source:ADDRESS_META.source,updated:ADDRESS_META.sourceUpdated});
+  const result=await env.DB.prepare('SELECT address_key,lat_e7,lon_e7 FROM address_door WHERE snapshot_id=? AND '+column+'=? LIMIT 2').bind(D1_SNAPSHOT_ID,key).all();
+  const rows=result.results;
+  if(rows.length===1){const r=rows[0];return reply({match:{address:'臺北市'+r.address_key,lat:r.lat_e7/1e7,lon:r.lon_e7/1e7},source:ADDRESS_META.source,updated:ADDRESS_META.sourceUpdated,sha256:ADDRESS_META.sha256,precision:'official-address-point'})}
+  if(!rows.length){const r=await env.DB.prepare('SELECT evidence_json FROM address_reference WHERE snapshot_id=? AND address_key=?').bind(D1_SNAPSHOT_ID,key).first();if(r){const v=JSON.parse(r.evidence_json);return reply({match:{address:v.address,name:v.name,lat:v.lat,lon:v.lon},provider:'verified-address',source:v.coordinateSource,addressSource:v.addressSource,checkedAt:v.checkedAt||VERIFIED_ADDRESS_REFERENCES.checkedAt,precision:'address-reference'})}}
+  return reply({match:null,reason:rows.length?'Ambiguous address':'No exact official address'});
+ }catch{return unavailable()}
+}
+// Owner-private Site only: Sites dispatch authenticates browser/service access.
+// No arbitrary SQL, no unrelated tables, no runtime schema changes.
+async function d1Admin(request,env){
+ if(!env.DB)return Response.json({error:'DB unavailable'},{status:503});
+ const tables={doors:['address_door',['address_key','districtless_key','lat_e7','lon_e7']],conflicts:['address_conflict',['address_key','districtless_key']],references:['address_reference',['address_key','lat_e7','lon_e7','evidence_json']]};
+ try{
+  if(request.method==='GET'){
+   const u=new URL(request.url),kind=u.searchParams.get('kind');
+   if(kind==='status'){const snap=await env.DB.prepare('SELECT * FROM address_snapshot WHERE snapshot_id=?').bind(D1_SNAPSHOT_ID).first();const counts={};for(const [k,[t]] of Object.entries(tables))counts[k]=(await env.DB.prepare('SELECT COUNT(*) AS n FROM '+t+' WHERE snapshot_id=?').bind(D1_SNAPSHOT_ID).first()).n;return Response.json({snapshot:snap,counts})}
+   if(!tables[kind])return Response.json({error:'Unknown table'},{status:400});
+   const [t,cols]=tables[kind];const result=await env.DB.prepare('SELECT '+cols.join(',')+' FROM '+t+' WHERE snapshot_id=? AND address_key>? ORDER BY address_key LIMIT 2000').bind(D1_SNAPSHOT_ID,u.searchParams.get('after')||'').all();return Response.json(result.results);
+  }
+  if(request.method!=='POST')return Response.json({error:'Method not allowed'},{status:405});
+  const body=await request.json();if(body.snapshotId!==D1_SNAPSHOT_ID)return Response.json({error:'Wrong snapshot'},{status:400});
+  if(body.kind==='snapshot'){
+   if(body.indexSha!==D1_INDEX_SHA||body.sourceSha!==ADDRESS_META.sha256)return Response.json({error:'Source mismatch'},{status:400});
+   await env.DB.prepare("INSERT OR IGNORE INTO address_snapshot VALUES (?,?,?,?,?,?,?,'loading')").bind(D1_SNAPSHOT_ID,body.sourceSha,body.indexSha,JSON.stringify(body.meta),251431,15,2).run();return Response.json({ok:true});
+  }
+  const snap=await env.DB.prepare('SELECT state FROM address_snapshot WHERE snapshot_id=?').bind(D1_SNAPSHOT_ID).first();
+  if(!snap)return Response.json({error:'Initialize snapshot first'},{status:409});
+  if(body.kind==='verify'){
+   if(body.readbackSha!==D1_INDEX_SHA)return Response.json({error:'Readback hash required'},{status:400});
+   const expected={doors:251431,conflicts:15,references:3};for(const [k,[t]] of Object.entries(tables)){const row=await env.DB.prepare('SELECT COUNT(*) AS n FROM '+t+' WHERE snapshot_id=?').bind(D1_SNAPSHOT_ID).first();if(row.n!==expected[k])return Response.json({error:'Incomplete '+k},{status:409})}
+   await env.DB.prepare("UPDATE address_snapshot SET state='verified' WHERE snapshot_id=?").bind(D1_SNAPSHOT_ID).run();return Response.json({ok:true});
+  }
+  if(snap.state!=='loading')return Response.json({error:'Verified snapshot is immutable'},{status:409});
+  if(!tables[body.kind]||!Array.isArray(body.rows)||!body.rows.length||body.rows.length>1000)return Response.json({error:'Invalid batch'},{status:400});
+  const [t,cols]=tables[body.kind];
+  for(const r of body.rows){if(r.length!==cols.length||typeof r[0]!=='string'||r[0].length>200)return Response.json({error:'Invalid row'},{status:400});if(body.kind!=='conflicts'){const offset=body.kind==='doors'?2:1;if(!Number.isInteger(r[offset])||!Number.isInteger(r[offset+1])||r[offset]<247000000||r[offset]>255000000||r[offset+1]<1213000000||r[offset+1]>1218000000)return Response.json({error:'Invalid coordinates'},{status:400})}}
+  const per=Math.floor(100/(cols.length+1)),statements=[];
+  for(let i=0;i<body.rows.length;i+=per){const rows=body.rows.slice(i,i+per).map(r=>[D1_SNAPSHOT_ID,...r]);statements.push(env.DB.prepare('INSERT OR IGNORE INTO '+t+' (snapshot_id,'+cols.join(',')+') VALUES '+rows.map(()=> '('+Array(cols.length+1).fill('?').join(',')+')').join(',')).bind(...rows.flat()))}
+  await env.DB.batch(statements);return Response.json({ok:true,rows:body.rows.length});
+ }catch{return Response.json({error:'Database operation failed'},{status:503})}
+}

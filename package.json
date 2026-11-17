@@ -1,1 +1,8 @@
-{"name":"taipeipark-wenlin-isolated","private":true,"type":"module"}
+{
+  "name": "taipeipark-source",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  }
+}

@@ -1,12 +1,30 @@
-# TaipeiPark test-d1
+# TaipeiPark — public source (test-d1)
 
-This branch tracks the corresponding isolated test site only. `main` remains production v30. See provenance.json for deployed source and site version. GitHub commits do not automatically deploy Sites.
+Runtime logic and page code are kept in `src/`. Map datasets, supplemental locations,
+third-party evidence, mixed SQL and historical data-dependent QA artifacts are held
+outside this public tree in ChatGPT Library. They are not replaced with fabricated or empty data.
 
-## Update contract
-Every future change to this test site must be committed to this branch with data/source provenance, patch intent, test results, and deployed Sites version. Never mix the other test site into this branch. Use a separate dated commit per actual update; do not fabricate past commits. Never commit credentials, private player/user data, or runtime tokens.
+## Build
 
-## Current status
-D1 candidate v2 includes non-GET import endpoint lock. Live metadata expected_references=2 vs actual3 remains unresolved. Fixed100 remains69/100, below85/100; production unchanged. Local metadata-v2 candidate and public data export are included separately, not claimed deployed.
+Restore the matching private pack from the Library backup, outside this checkout:
 
-## Metadata repair reproducibility
-See [repair checkpoint](qa/metadata-review/REPORT.md) for the proven 2-versus-3 cause, separate source/evidence/import dates, and portable local preparation/test commands. Cloud metadata remains unfixed; no deployment is implied.
+```sh
+TAIPEIPARK_PRIVATE_PACK=/absolute/private/path/test-d1-private-pack.json npm run build
+```
+
+Build checks the pack version and reconstructed Worker SHA-256 against
+`build-manifest.json`. Missing data or a mismatched release stops the build.
+`dist/` must never be committed. Runtime D1 data is separately backed up; this
+repository is not a complete database backup. No deployment occurs on build.
+The published Sites deployment and its D1 are unchanged by this source cleanup.
+
+## Data policy
+
+Do not commit map/supplemental location datasets, venue references, OSM/PlugShare
+records, private packs, generated Workers, SQL data dumps, or coordinate-bearing
+QA evidence. New datasets require individual source and reuse-license review.
+Generic map rendering/parsing code remains; third-party software notices remain intact.
+See `DATA-SOURCES.md` for the limited official raw files retained here.
+
+This normal commit cleans the current branch only. Earlier commits and third-party
+copies may still contain removed data. No history rewriting or visibility change was performed.

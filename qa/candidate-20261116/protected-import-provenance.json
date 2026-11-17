@@ -1,7 +1,0 @@
-{
-  "baseSha256": "067604d1a0e5a6094bdaa808e94628f914228c6a8b1e4877a5a9f66775297d26",
-  "candidateSha256": "21d710cc143c3ad1df0d8ddc9003088160e5d0f8e1a721bd792c74a3cd93c01f",
-  "deployment": false,
-  "currentGate": "1 live consistency;2 protected import/backup/restore/rollback;3 function/browser/mobile. 85 location threshold deferred until after migration by user instruction.",
-  "limitation": "Test source retained for audit; fixture paths documented in source, not yet packaged fresh-checkout full pipeline."
-}
