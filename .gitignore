@@ -1,1 +1,6 @@
 dist/
+.private/
+*-private-pack.json
+*.sqlite
+*.sql.gz
+node_modules/
