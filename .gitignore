@@ -1,7 +1,6 @@
 dist/
-site.tar.gz
-
-.env*
+.private/
+*-private-pack.json
 *.sqlite
-.openai/hosting.json
-.venv/
+*.sql.gz
+node_modules/

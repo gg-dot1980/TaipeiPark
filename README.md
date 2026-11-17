@@ -1,44 +1,30 @@
-> Production is now Sites v32 with D1. See [v32 deployment provenance, validation and data limits](docs/releases/v32/README.md). GitHub sync SHA differs from the Sites source SHA.
+# TaipeiPark — public source (main)
 
-# TaipeiPark
+Runtime logic and page code are kept in `src/`. Map datasets, supplemental locations,
+third-party evidence, mixed SQL and historical data-dependent QA artifacts are held
+outside this public tree in ChatGPT Library. They are not replaced with fabricated or empty data.
 
-Source tracking for the public Taipei parking application: https://taipeipark.audihsu.chatgpt.site
+## Build
 
-## Imported baseline
-
-Production Sites version **30**, source commit `ba1bd5c93349dba31d70d3b0978bbfbd0c45fd8e`, imported 2026-11-12. This is a new GitHub history starting from a verified snapshot, not a reconstruction of older patches. Uploading this repository does not deploy or modify the live site.
-
-## Build and test
-
-Requires Node.js, Python 3 (`python` command), and Bash. No application dependency install is needed for the bundled Worker. The geometry test additionally requires Shapely and pyproj; tested versions are pinned in `requirements-test.txt`.
+Restore the matching private pack from the Library backup, outside this checkout:
 
 ```sh
-python -m venv .venv
-. .venv/bin/activate
-python -m pip install --index-url https://pypi.org/simple -r requirements-test.txt
-# Production hosting.json already contains the authorized v32 project and D1 binding.
-# For a separate deployment, configure your own authorized project and D1 binding.
-# Set your own authorized Sites project ID before deploying.
-npm test
-npm run build
-npm run validate
-npm run dev
+TAIPEIPARK_PRIVATE_PACK=/absolute/private/path/main-private-pack.json npm run build
 ```
 
-The build synchronizes reviewed HTML/data into `worker/index.js`, then creates `dist/server/index.js`. The GitHub export omits the original Sites project identity. For an independently authorized deployment, configure `.openai/hosting.json` with your own project ID before building. Do not accidentally publish to the original production project.
+Build checks the pack version and reconstructed Worker SHA-256 against
+`build-manifest.json`. Missing data or a mismatched release stops the build.
+`dist/` must never be committed. Runtime D1 data is separately backed up; this
+repository is not a complete database backup. No deployment occurs on build.
+The published Sites deployment and its D1 are unchanged by this source cleanup.
 
-## Data and behavior
+## Data policy
 
-`data/` holds reviewed public parking inventory, availability fixtures, road geometry, tariff snapshots, provenance and audit metadata. Fixtures are historical testing inputs, not current parking availability. Unknown or stale capacity is not represented as available. Approximate address results require confirmation and are not surveyed parking entrances.
+Do not commit map/supplemental location datasets, venue references, OSM/PlugShare
+records, private packs, generated Workers, SQL data dumps, or coordinate-bearing
+QA evidence. New datasets require individual source and reuse-license review.
+Generic map rendering/parsing code remains; third-party software notices remain intact.
+See `DATA-SOURCES.md` for the limited official raw files retained here.
 
-Sources include Taipei Parking Management and Open Data, and OpenStreetMap. Preserve embedded attribution and source metadata. Source records and third-party assets retain their respective terms; this import grants no new license to third-party data or assets. The repository does not contain credentials, environment secret values, user locations/history, private databases or runtime database backups.
-
-## Experimental database work
-
-`experimental/d1/schema.sql` records the isolated D1 address-storage design, **not production v30's storage**. See `docs/DATABASE.md`. The compression candidate v2 and isolated D1 candidate v1 are separate live experiments and are not represented as production-ready here.
-
-Future reviewed changes should be committed with their test evidence. Do not publish D1 changes until the established acceptance gates are met.
-
-## Import verification
-
-Build and Worker artifact validation passed. All JavaScript tests passed in `npm test`. After installing missing Shapely and pyproj in an isolated virtual environment from official PyPI, the remaining geometry and source-link tests, build and artifact validation passed. This was a resumed sequence rather than one uninterrupted aggregate run. See `docs/IMPORT-VALIDATION.md`. Runtime data freshness, D1 migration and browser acceptance were not revalidated by this source export.
+This normal commit cleans the current branch only. Earlier commits and third-party
+copies may still contain removed data. No history rewriting or visibility change was performed.
